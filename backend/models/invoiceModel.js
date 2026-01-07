@@ -101,4 +101,11 @@ const InvoiceSchema = new mongoose.Schema({
     subtotal: { type: Number, default: 0 },
     tax: { type: Number, default: 0 },
     total: { type: Number, default: 0 },
+},
+{
+    timestamps: true,
 });
+
+const Invoice = mongoose.models.Invoice || mongoose.model("Invoice", InvoiceSchema);
+
+export default Invoice;
