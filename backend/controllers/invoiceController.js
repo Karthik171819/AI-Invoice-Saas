@@ -26,4 +26,10 @@ function parseItemsField(val) {
       return [];
     }
   }
+  return val;
+}
+
+// check if string is Obj ID
+function isObjectIdString(val) {
+   return typeof val == "string" && /^[0-9a-fA-F]{24}$/.test(val); 
 }
