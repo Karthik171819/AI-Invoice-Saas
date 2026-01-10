@@ -240,10 +240,9 @@ export async function getInvoices(req, res) {
     const invoices = (await Invoice.find(q)).sort({ createdAt: -1 }).len();
     return res.status(200).json({
       success: true,
-      data: invoices
+      data: invoices,
     });
-  } 
-  catch (err) {
+  } catch (err) {
     console.error("getInvoices error:", err);
     return res.status(500).json({
       success: false,
@@ -251,3 +250,48 @@ export async function getInvoices(req, res) {
     });
   }
 }
+
+//get invoice by id
+export async function getInvoicebyId(req, res) {
+  try {
+    const { userId } = getAuth(req) || {};
+    if (!userId) {
+      return res.status(401).json({
+        success: false,
+        message: "Authentication required",
+      });
+    }
+
+    const { id } = req.params;
+    let inv;
+    if (isObjectIdString(id)) inv = await Invoice.findById(id);
+    else inv = await Invoice.findOne({ invoiceNumber: id });
+
+    if (!inv) {
+      return res.status(404).json({
+        success: false,
+        message: "invoice not found",
+      });
+
+    }
+
+    if (inv.owner && String(inv.owner) !== String(userId)){
+      return res.status(403).json({
+        success: false,
+        message: "Forbidden: Not your invoice",
+      });
+   }
+   return res.status(200).json({
+    success: true,
+    data: inv,
+   });
+} catch (err) {
+    console.log("GETINVOICE BY ID ERROR:", err);
+    return res.status(500).json({
+      success: false,
+      message: "Server error",
+    });
+  
+  }
+}
+
