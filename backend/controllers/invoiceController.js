@@ -295,3 +295,24 @@ export async function getInvoicebyId(req, res) {
   }
 }
 
+//update an invoice
+export async function updateInvoice(req, res) {
+  try{
+    const { userId } = getAuth(req) || {};
+    if (!userId) {
+      return res.status(401).json({
+        success: false,
+        message: "Authentication required",
+      });
+    }
+    const { id } = req.params;
+    const body = eq.body || {};
+
+    const query = isObjectIdstring(id) ? {_id: id, owner: userId} : {invoiceNumber: id}
+  }
+
+  catch (error) {
+
+  }
+
+}
