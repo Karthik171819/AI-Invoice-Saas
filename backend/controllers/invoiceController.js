@@ -31,7 +31,7 @@ function parseItemsField(val) {
 
 // check if string is Obj ID
 function isObjectIdString(val) {
-   return typeof val == "string" && /^[0-9a-fA-F]{24}$/.test(val); 
+  return typeof val == "string" && /^[0-9a-fA-F]{24}$/.test(val);
 }
 
 //for helper functions for uploading files to public urls
@@ -61,7 +61,9 @@ function uploadedFilesToUrls(req) {
 async function generateUniqueInvoiceNumber(attempts = 8) {
   for (let i = 0; i < attempts; i++) {
     const ts = Date.now().toString();
-    const suffix = Math.floor(Math.random() * 900000).toString().padStart(6, "0");
+    const suffix = Math.floor(Math.random() * 900000)
+      .toString()
+      .padStart(6, "0");
     const candidate = `INV-${ts.slice(-6)}-${suffix}`;
 
     const exists = await Invoice.exists({ invoiceNumber: candidate });
@@ -97,9 +99,11 @@ export async function createInvoice(req, res) {
         ? String(body.invoiceNumber).trim()
         : null;
 
-        //invoice number if present then error else ok because invoiceNumber must be unique 
+    //invoice number if present then error else ok because invoiceNumber must be unique
     if (invoiceNumberProvided) {
-      const duplicate = await Invoice.exists({ invoiceNumber: invoiceNumberProvided });
+      const duplicate = await Invoice.exists({
+        invoiceNumber: invoiceNumberProvided,
+      });
       if (duplicate) {
         return res
           .status(409)
@@ -108,7 +112,8 @@ export async function createInvoice(req, res) {
     }
 
     // generate a unique invoice number (or use provided)
-    let invoiceNumber = invoiceNumberProvided || (await generateUniqueInvoiceNumber());
+    let invoiceNumber =
+      invoiceNumberProvided || (await generateUniqueInvoiceNumber());
 
     // Build document
     const doc = new Invoice({
@@ -157,7 +162,12 @@ export async function createInvoice(req, res) {
         break; // success
       } catch (err) {
         // If duplicate invoiceNumber (race), regenerate and retry
-        if (err && err.code === 11000 && err.keyPattern && err.keyPattern.invoiceNumber) {
+        if (
+          err &&
+          err.code === 11000 &&
+          err.keyPattern &&
+          err.keyPattern.invoiceNumber
+        ) {
           attempts += 1;
           // generate a new invoiceNumber and set on doc
           const newNumber = await generateUniqueInvoiceNumber();
@@ -188,7 +198,12 @@ export async function createInvoice(req, res) {
         .json({ success: false, message: "Payload too large" });
     }
     // handle duplicate key at top-level just in case
-    if (err && err.code === 11000 && err.keyPattern && err.keyPattern.invoiceNumber) {
+    if (
+      err &&
+      err.code === 11000 &&
+      err.keyPattern &&
+      err.keyPattern.invoiceNumber
+    ) {
       return res
         .status(409)
         .json({ success: false, message: "Invoice number already exists" });
@@ -199,20 +214,40 @@ export async function createInvoice(req, res) {
 
 //list of all INVOICES
 export async function getInvoices(req, res) {
-    try {
-        const { userId } = getAuth(req) || {};
-        if (!userId) {
-            return res.status(401).json({ 
-                success: false,
-                message: "Authentication required" 
-            });
-        }
-
-        const q = {owner: userId};
-        if(req.query.status) q.status = req.query.status;
+  try {
+    const { userId } = getAuth(req) || {};
+    if (!userId) {
+      return res.status(401).json({
+        success: false,
+        message: "Authentication required",
+      });
     }
-    catch(error){
 
+    const q = { owner: userId };
+    if (req.query.status) q.status = req.query.status;
+    if (req.query.invoiceNumber) q.invoiceNumber = req.query.invoiceNumber;
+    //for filter
+    if (req.query.search) {
+      const search = req.query.search.trim();
+      q.$or = [
+        { fromEmail: { $regex: search, $options: "i" } },
+        { "client.email": { $regex: search, $options: "i" } },
+        { "client.name": { $regex: search, $options: "i" } },
+        { invoiceNumber: { $regex: search, $options: "i" } },
+      ];
     }
+
+    const invoices = (await Invoice.find(q)).sort({ createdAt: -1 }).len();
+    return res.status(200).json({
+      success: true,
+      data: invoices
+    });
+  } 
+  catch (err) {
+    console.error("getInvoices error:", err);
+    return res.status(500).json({
+      success: false,
+      message: "Server error",
+    });
+  }
 }
-
