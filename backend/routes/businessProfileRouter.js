@@ -3,6 +3,7 @@ import multer from 'multer';
 import path from 'path';
 
 import { clerkMiddleware } from "2clerk/express";
+import { createBusinessProfile } from '../controllers/businessProfileController.js';    
 
 const businessProfileRouter = express.Router();
 
@@ -21,4 +22,15 @@ const storage = multer.diskStorage({
 });
 
 const upload = multer({ storage });
+
+//create business profile with image upload
+businessProfileRouter.post(
+    "/",
+    upload.fields([
+        {name: "logoName", maxCount: 1},
+        {name: "stampName", maxCount: 1},
+        {name: "signatureName", maxCount: 1},
+    ]),
+    createBusinessProfile
+)
 
