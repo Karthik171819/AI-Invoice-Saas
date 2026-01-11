@@ -3,7 +3,7 @@ import multer from 'multer';
 import path from 'path';
 
 import { clerkMiddleware } from "2clerk/express";
-import { createBusinessProfile } from '../controllers/businessProfileController.js';    
+import { createBusinessProfile, updateBusinessProfile } from '../controllers/businessProfileController.js';    
 
 const businessProfileRouter = express.Router();
 
@@ -32,5 +32,16 @@ businessProfileRouter.post(
         {name: "signatureName", maxCount: 1},
     ]),
     createBusinessProfile
+);
+
+//to update the profile later, we can create a PUT route similarly
+businessProfileRouter.put(
+    "/:id",
+    upload.fields([
+        {name: "logoName", maxCount: 1},
+        {name: "stampName", maxCount: 1},
+        {name: "signatureName", maxCount: 1},
+    ]),
+    updateBusinessProfile
 )
 
