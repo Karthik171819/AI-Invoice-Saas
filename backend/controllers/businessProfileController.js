@@ -57,9 +57,7 @@ export async function createBuisnessProfile(req, res) {
       dara: saved,
       message: "Business profile created successfully",
     });
-  } 
-  
-  catch (err) {
+  } catch (err) {
     console.log("Error creating business profile:", err);
     return res.status(500).json({
       success: false,
@@ -69,3 +67,74 @@ export async function createBuisnessProfile(req, res) {
 }
 
 //to update a business profile
+export async function updateBusinessProfile(req, res) {
+  try {
+    const { userId } = getAuth(req);
+    if (!userId) {
+      return res.status(401).json({ message: "Authentication required" });
+    }
+
+    const { id } = req.params;
+    const body = req.body || {};
+    const fileUrls = uploadedFilesToUrls(req);
+
+    const existing = await BusinessProfile.findById(id);
+    if (!existing)
+      return res.status(404).json({
+        success: false,
+        message: "Business profile not found",
+      });
+
+    if (existing.owner.toString() !== userId) {
+      return res.status(403).json({
+        success: false,
+        message: "You are not authorized to update this business profile",
+      });
+    }
+
+    const update = {};
+
+    if (body.businessName !== undefined)
+      update.businessName = body.businessName;
+    if (body.email !== undefined) update.email = body.email;
+    if (body.address !== undefined) update.address = body.address;
+    if (body.phone !== undefined) update.phone = body.phone;
+    if (body.gst !== undefined) update.gst = body.gst;
+
+    if (fileUrls.logoUrl) update.logoUrl = fileUrls.logoUrl;
+    else if (body.logoUrl !== undefined) update.logoUrl = body.logoUrl;
+
+    if (fileUrls.stampUrl) update.stampUrl = fileUrls.stampUrl;
+    else if (body.stampUrl !== undefined) update.stampUrl = body.stampUrl;
+
+    if (fileUrls.signatureUrl) update.signatureUrl = fileUrls.signatureUrl;
+    else if (body.signatureUrl !== undefined)
+      update.signatureUrl = body.signatureUrl;
+
+    if (body.signatureOwnerName !== undefined)
+      update.signatureOwnerName = body.signatureOwnerName;
+    if (body.signatureOwnerTitle !== undefined)
+      update.signatureOwnerTitle = body.signatureOwnerTitle;
+    if (body.defaultTaxPercent !== undefined)
+      update.defaultTaxPercent = Number(body.defaultTaxPercent);
+
+    const updated = await BusinessProfile.findByIdandUpdate(id, update, {
+      new: true,
+      runValidators: true,
+    });
+
+    return res.status(200).json({
+      success: true,
+      data: updated,
+      message: "Business profile updated successfully",
+    });
+  } 
+  
+  catch (err) {
+    console.log("Error updating business profile:", err);
+    return res.status(500).json({
+      success: false,
+      message: "Internal server error",
+    });
+  }
+}
