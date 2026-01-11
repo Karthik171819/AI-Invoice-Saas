@@ -128,10 +128,39 @@ export async function updateBusinessProfile(req, res) {
       data: updated,
       message: "Business profile updated successfully",
     });
+  } catch (err) {
+    console.log("Error updating business profile:", err);
+    return res.status(500).json({
+      success: false,
+      message: "Internal server error",
+    });
+  }
+}
+
+// to get mybusiness profile
+export async function getMyBusinessProfile(req, res) {
+  try {
+    const { userId } = getAuth(req);
+    if (!userId) {
+      return res.status(401).json({ message: "Authentication required" });
+    }
+
+    const profile = await BusinessProfile.findOne({ owner: userId }).lean();
+    if (!profile) {
+      return res.status(204).json({
+        success: false,
+        message: "Business profile not found",
+      });
+    }
+
+    return res.status(200).json({
+      success: true,
+      data: profile,
+    });
   } 
   
   catch (err) {
-    console.log("Error updating business profile:", err);
+    console.log("Error fetching business profile:", err);
     return res.status(500).json({
       success: false,
       message: "Internal server error",
