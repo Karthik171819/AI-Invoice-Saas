@@ -1,6 +1,7 @@
 import mongoose from "mongoose";
 import Invoice from "../models/invoiceModel.js";
 import { getAuth } from "@clerk/express";
+import path from "path";
 
 const API_BASE = "http://localhost:4000";
 
@@ -415,5 +416,51 @@ export async function updateInvoice(req, res) {
         .json({ success: false, message: "Invoice number already exists" });
     }
     return res.status(500).json({ success: false, message: "Server error" });
+  }
+}
+
+// to delete an invoice
+export async function deleteInvoice(req, res){
+  try{
+
+    const { userId } = getAuth(req) || {};
+    if (!userId) {
+      return res.status(401).json({
+        success: false,
+        message: "Authentication required",
+      });
+    }
+
+    const { id } = req.params;
+
+    const query = isObjectIdString (id)
+      ? { _id: id, owner: userId }
+      : { invoiceNumber: id, owner: userId };
+
+      const found = await Invoice.findOne(query);
+
+      if (!found){
+        return res.status(404).json({
+          success: false,
+          message: "Invoice not found",
+        });
+      }
+
+      await Invoice.deleteOne({ _id: found._id});
+      return res.status(200).json({
+        success: true,
+        message: "Invoice deleted",
+      });
+    }
+
+  
+
+  catch (err){
+    console.error("deleteInvoice error:", err);
+    return res.status(500).json({
+      success: false,
+      message: "Server error",
+    });
+
   }
 }
