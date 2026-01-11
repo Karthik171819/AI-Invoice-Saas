@@ -253,7 +253,7 @@ export async function getInvoices(req, res) {
 }
 
 //get invoice by id
-export async function getInvoicebyId(req, res) {
+export async function getInvoiceById(req, res) {
   try {
     const { userId } = getAuth(req) || {};
     if (!userId) {
