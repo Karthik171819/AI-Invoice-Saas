@@ -2,7 +2,7 @@ import express from 'express';
 import multer from 'multer';
 import path from 'path';
 
-import { clerkMiddleware } from "2clerk/express";
+import { clerkMiddleware } from "@clerk/express";
 import { createBusinessProfile, getMyBusinessProfile, updateBusinessProfile } from '../controllers/businessProfileController.js';    
 
 const businessProfileRouter = express.Router();

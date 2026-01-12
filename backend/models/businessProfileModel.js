@@ -1,6 +1,6 @@
 import mongoose from "mongoose";
 
-const buisnessProfileSchema = new mongoose.Schema({
+const businessProfileSchema = new mongoose.Schema({
     owner: {type: String, required: true, index: true},
     businessName: {type: String, required: true},
     email: {type: String, required: false, trim: true, lowercase: true, default: ""},
@@ -22,6 +22,6 @@ const buisnessProfileSchema = new mongoose.Schema({
     timestamps: true,
 });
 
-const BuisnessProfile = mongoose.models.BusinessProfile || mongoose.model("BusinessProfile", buisnessProfileSchema);
+const BusinessProfile = mongoose.models.BusinessProfile || mongoose.model("BusinessProfile", businessProfileSchema);
 
-export default BuisnessProfile;
+export default BusinessProfile;
