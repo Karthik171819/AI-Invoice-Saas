@@ -3,7 +3,7 @@ import multer from 'multer';
 import path from 'path';
 
 import { clerkMiddleware } from "2clerk/express";
-import { createBusinessProfile, updateBusinessProfile } from '../controllers/businessProfileController.js';    
+import { createBusinessProfile, getMyBusinessProfile, updateBusinessProfile } from '../controllers/businessProfileController.js';    
 
 const businessProfileRouter = express.Router();
 
@@ -43,5 +43,9 @@ businessProfileRouter.put(
         {name: "signatureName", maxCount: 1},
     ]),
     updateBusinessProfile
-)
+);
+
+businessProfileRouter.get("/me", getMyBusinessProfile);
+
+export default businessProfileRouter;
 
