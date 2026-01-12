@@ -12,7 +12,7 @@ businessProfileRouter.use(clerkMiddleware());
 //multer setup for image handling
 const storage = multer.diskStorage({
     destination: (req, file, cb) => {
-        cb(null, path.joind(process.cwd(), "uploads"));
+        cb(null, path.join(process.cwd(), "uploads"));
     },
     filename: (req, file, cb) => {
         const unique = Date.now() + '-' + Math.round(Math.random() * 1e9);
