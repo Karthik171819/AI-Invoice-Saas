@@ -2,10 +2,11 @@ import express from 'express';
 import cors from 'cors';
 import 'dotenv/config';
 import { clerkMiddleware } from '@clerk/express'
-import {connectDB} from './config/db.js';
+import { connectDB } from './config/db.js';
 import path from 'path';
 import invoiceRouter from './routes/invoiceRouter.js';
 import businessProfileRouter from './routes/businessProfileRouter.js';
+import aiInvoiceRouter from './routes/aiInvoiceRouter.js';
 
 const app = express();
 const port = 4000;
@@ -25,6 +26,7 @@ app.use('/uploads', express.static(path.join(process.cwd(), "uploads")));
 
 app.use('/api/invoice', invoiceRouter);
 app.use('/api/businessprofile', businessProfileRouter);
+app.use('/api/ai', aiInvoiceRouter);
 
 app.get('/', (req, res) => {
     res.send('API is running...');  
