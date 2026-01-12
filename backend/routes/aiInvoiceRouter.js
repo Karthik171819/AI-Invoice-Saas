@@ -185,5 +185,19 @@ aiInvoiceRouter.post("/generate", async (req, res) => {
             raw: text
         });
     }
-  } catch (error) {}
+    return res.status(200).json({
+      success: true,
+      model: usedModel,
+      data,
+    });
+  } catch (error) {
+    console.error("AI invoice generation error", err);
+    return res.status(500).json({
+      success: false,
+      message: "AI generation failed",
+      detail: error?.message || String(error),
+    })
+  }
 });
+
+export default aiInvoiceRouter;
