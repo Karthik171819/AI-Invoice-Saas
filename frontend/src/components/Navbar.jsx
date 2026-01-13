@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useCallback } from "react";
 import { navbarStyles } from "../assets/dummyStyles";
 import logo from "../assets/logo.png";
 import { Link, useNavigate } from "react-router-dom";
@@ -17,6 +17,32 @@ const Navbar = () => {
   const navigate = useNavigate();
   const profileRef = useRef(null);
   const TOKEN_KEY = "token";
+
+  //for token generation means fetch and store also refresh for if not found
+  const fetchAndStoreToken = useCallback(async  () => {
+      try{
+        if(!getToken){
+          return null;
+        }
+        const token = await getToken().catch(() => null);
+        if(token){
+          try{
+              localStorage.setItem(TOKEN_KEY, token);
+              console.log(token);
+          } catch (e){
+            //ignore any error if occured
+          }
+          return token;
+        }
+        else {
+          return null;
+        }
+      } catch(err){
+          return null;
+      }
+  }, [getToken]);
+
+  
 
   // to open login model
   function openSignIn() {
@@ -111,7 +137,7 @@ const Navbar = () => {
                   }`}
                 ></span>
 
-                 <span
+                <span
                   className={`${navbarStyles.mobileMenuLine2} ${
                     open
                       ? navbarStyles.mobileMenuLine2Open
@@ -119,32 +145,47 @@ const Navbar = () => {
                   }`}
                 ></span>
 
-                 <span
+                <span
                   className={`${navbarStyles.mobileMenuLine3} ${
                     open
                       ? navbarStyles.mobileMenuLine3Open
                       : navbarStyles.mobileMenuLine3Closed
                   }`}
                 ></span>
-
               </div>
             </button>
           </div>
         </nav>
       </div>
 
-      <div className={`$open ? 'block' : 'hidden'} ${navbarStyles.mobileMenu}`}>
+      <div
+        className={`${open ? "block" : "hidden"} ${navbarStyles.mobileMenu}`}
+      >
         <div className={navbarStyles.mobileMenuContainer}>
-            <a href="#features" className={navbarStyles.mobileNavLink}>
-                Features
-            </a>
-            <a href="#pricing" className={navbarStyles.mobileNavLink}>
-                Pricing
-            </a>
+          <a href="#features" className={navbarStyles.mobileNavLink}>
+            Features
+          </a>
+          <a href="#pricing" className={navbarStyles.mobileNavLink}>
+            Pricing
+          </a>
 
-            <div>
+          <div classNam={navbarStyles.mobileAuthSection}>
+            <SignedOut>
+              <button
+                onClick={openSignIn}
+                className={navbarStyles.mobileSignIn}
+              >
+                Sign In
+              </button>
 
-            </div>
+              <button
+                onClick={openSignUp}
+                className={navbarStyles.mobileSignIn}
+              >
+                Get Started
+              </button>
+            </SignedOut>
+          </div>
         </div>
       </div>
     </header>
