@@ -1,4 +1,4 @@
-import React, { useCallback } from "react";
+import React, { useCallback, useEffect } from "react";
 import { navbarStyles } from "../assets/dummyStyles";
 import logo from "../assets/logo.png";
 import { Link, useNavigate } from "react-router-dom";
@@ -19,30 +19,51 @@ const Navbar = () => {
   const TOKEN_KEY = "token";
 
   //for token generation means fetch and store also refresh for if not found
-  const fetchAndStoreToken = useCallback(async  () => {
-      try{
-        if(!getToken){
-          return null;
-        }
-        const token = await getToken().catch(() => null);
-        if(token){
-          try{
-              localStorage.setItem(TOKEN_KEY, token);
-              console.log(token);
-          } catch (e){
-            //ignore any error if occured
-          }
-          return token;
-        }
-        else {
-          return null;
-        }
-      } catch(err){
-          return null;
+  const fetchAndStoreToken = useCallback(async () => {
+    try {
+      if (!getToken) {
+        return null;
       }
+      const token = await getToken().catch(() => null);
+      if (token) {
+        try {
+          localStorage.setItem(TOKEN_KEY, token);
+          console.log(token);
+        } catch (e) {
+          //ignore any error if occured
+        }
+        return token;
+      } else {
+        return null;
+      }
+    } catch (err) {
+      return null;
+    }
   }, [getToken]);
 
-  
+  //keep the localstorage token in sync with clerk auth state
+  useEffect(() => {
+    let mounted = true;
+
+    (async () => {
+      if (isSignedIn) {
+        const t = await fetchAndStorageToken({ template: "default" }).catch(
+          () => null
+        );
+        if (!t && mounted) {
+          await fetchAndStoreToken({ forceRefresh: true }).catch(() => null);
+        }
+      } else {
+        try {
+          localStorage.removeitem(TOKEN_KEY);
+        } catch {}
+      }
+    })();
+
+    return () => {
+      mounted = false;
+    };
+  }, [isSignedIn, user, fetchAndStorageToken]);
 
   // to open login model
   function openSignIn() {
