@@ -47,7 +47,7 @@ const Navbar = () => {
 
     (async () => {
       if (isSignedIn) {
-        const t = await fetchAndStorageToken({ template: "default" }).catch(
+        const t = await fetchAndStoreToken({ template: "default" }).catch(
           () => null
         );
         if (!t && mounted) {
@@ -63,7 +63,22 @@ const Navbar = () => {
     return () => {
       mounted = false;
     };
-  }, [isSignedIn, user, fetchAndStorageToken]);
+  }, [isSignedIn, user, fetchAndStoreToken]);
+
+  // after successfull login redirect us to dashboard
+  useEffect(() => {
+      if(isSignedIn) {
+        const pathname = window.location.pathname || "/";
+        if(
+          pathname === "/login"  ||
+          pathname === "/signup" ||
+          pathname.startsWith("/auth") ||
+          pathname === '/'
+        ){
+          navigate("/app/dashboard", {replace: true });
+        }
+      }
+  }, []);
 
   // to open login model
   function openSignIn() {
@@ -190,7 +205,7 @@ const Navbar = () => {
             Pricing
           </a>
 
-          <div classNam={navbarStyles.mobileAuthSection}>
+          <div className={navbarStyles.mobileAuthSection}>
             <SignedOut>
               <button
                 onClick={openSignIn}
