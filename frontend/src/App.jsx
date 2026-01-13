@@ -1,13 +1,39 @@
-import React from 'react'
-import { Routes, Route } from 'react-router-dom';
-import Home from './pages/Home.jsx';
+import React from "react";
+import { Routes, Route } from "react-router-dom";
+import Home from "./pages/Home.jsx";
+import { RedirectToSignIn, SignedIn, SignedOut } from "@clerk/clerk-react";
+import AppShell from "./components/AppShell.jsx";
+import Dashboard from "./pages/Dashboard.jsx";
+
+const ClerkProtected = ({ children }) => (
+  <>
+    <SignedIn>{children}</SignedIn>
+    <SignedOut>
+      <RedirectToSignIn />
+    </SignedOut>
+  </>
+);
 
 const App = () => {
   return (
-    <Routes>
-      <Route path='/' element={<Home />} />
-    </Routes>
+    <div className="min-h-screen max-w-full overflow-x-hidden">
+      <Routes>
+        <Route path="/" element={<Home />} />
+        {/* route must be protected when user login */}
+        <Route
+          path="/app"
+          element={
+            <ClerkProtected>
+              <AppShell />
+            </ClerkProtected>
+          }
+        >
+          <Route index element={<Dashboard />} />
+          <Route path="dashboard" element={<Dashboard />} />
+        </Route>
+      </Routes>
+    </div>
   );
-}; 
+};
 
-export default App
+export default App;

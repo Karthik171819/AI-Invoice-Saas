@@ -78,7 +78,25 @@ const Navbar = () => {
           navigate("/app/dashboard", {replace: true });
         }
       }
-  }, []);
+  });
+
+  // close profile popover on outside click
+  useEffect(() => {
+  function onDocClick(e) {
+    if (!profileRef.current) return;
+    if (!profileRef.current.contains(e.target)) {
+      setProfileOpen(false);
+    }
+  }
+  if (profileOpen) {
+    document.addEventListener("mousedown", onDocClick);
+    document.addEventListener("touchstart", onDocClick);
+  }
+  return () => {
+    document.removeEventListener("mousedown", onDocClick);
+    document.removeEventListener("touchstart", onDocClick);
+  };
+}, [profileOpen]);
 
   // to open login model
   function openSignIn() {
