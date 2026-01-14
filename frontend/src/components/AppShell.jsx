@@ -2,7 +2,7 @@ import { appShellStyles } from "../assets/dummyStyles.js";
 import logo from "../assets/logo.png";
 import { useState, useEffect } from "react";
 import { useNavigate, Link, NavLink } from "react-router-dom";
-import { useClerk, useUser,  } from "@clerk/clerk-react";
+import { useClerk, useUser } from "@clerk/clerk-react";
 
 const AppShell = () => {
   const navigate = useNavigate();
@@ -53,14 +53,14 @@ const AppShell = () => {
   }, []);
 
   //logout
-  const logout = async () =>{
+  const logout = async () => {
     try {
-        await signOut();
-    } catch(error){
-        console.warn("Signout error :", error)
+      await signOut();
+    } catch (error) {
+      console.warn("Signout error :", error);
     }
     navigate("/login");
-  }
+  };
 
   //togggle sidebar
   const toggleSidebar = () => setCollapsed(!collapsed);
@@ -265,33 +265,188 @@ const AppShell = () => {
                 }`}
               >
                 {!collapsed ? (
-                  <button onClick={logout} className={appShellStyles.logoutButton}>
+                  <button
+                    onClick={logout}
+                    className={appShellStyles.logoutButton}
+                  >
                     <LogoutIcon className={appShellStyles.logoutIcon} />
                     <span>Logout</span>
                   </button>
                 ) : (
-                  <button onClick={logout}
-                  className="w-full flex items-center justify-center p-3
+                  <button
+                    onClick={logout}
+                    className="w-full flex items-center justify-center p-3
                   rounded-xl text-red-600 hover:bg-red-50 hover:shadow-md transition-all
-                  duration-300 ">
-                      <LogoutIcon className="w-5 h-5 hover:scale-1100 transition-transform"/>
+                  duration-300 "
+                  >
+                    <LogoutIcon className="w-5 h-5 hover:scale-1100 transition-transform" />
                   </button>
                 )}
 
                 <div className={appShellStyles.collapseSection}>
-                  <button onClick={toggleSidebar} className={`${appShellStyles.collapseButtonInner} ${
-                    collapsed ? appShellStyles.collapseButtonCollapsed : ""
-                  }`}>
+                  <button
+                    onClick={toggleSidebar}
+                    className={`${appShellStyles.collapseButtonInner} ${
+                      collapsed ? appShellStyles.collapseButtonCollapsed : ""
+                    }`}
+                  >
                     {!collapsed && (
-                      <span>{collapsed ? "Expand": "Collapse"}</span>
+                      <span>{collapsed ? "Expand" : "Collapse"}</span>
                     )}
-                    <CollapseIcon collapsed={collapsed}/>
+                    <CollapseIcon collapsed={collapsed} />
                   </button>
                 </div>
               </div>
             </div>
           </div>
         </aside>
+
+        {/* Mobile view */}
+        {mobileOpen && (
+          <div className={appShellStyles.mobileOverlay}>
+            <div
+              className={appShellStyles.mobileBackdrop}
+              onClick={() => setMobileOpen(false)}
+            />
+            <div className={appShellStyles.mobileSidebar}>
+              <div className={appShellStyles.mobileHeader}>
+                <Link
+                  to="/"
+                  className={appShellStyles.mobileLogoLink}
+                  onClick={() => setMobileOpen(false)}
+                >
+                  <img
+                    src={logo}
+                    alt=" logo"
+                    className={appShellStyles.mobilelogoImage}
+                  />
+                  <span className={appShellStyles.mobileLogoText}>
+                    InvoiceAI
+                  </span>
+                </Link>
+
+                <button
+                  onClick={() => setMobileOpen(false)}
+                  className={appShellStyles.mobileCloseButton}
+                >
+                  <svg
+                    className={appShellStyles.mobileCloseIcon}
+                    viewBox="0 0 24 24"
+                    fill="none"
+                    stroke="currentColor"
+                    strokeWidth="2"
+                  >
+                    <path d="M6 18L18 6M6 6l12 12" />
+                  </svg>
+                </button>
+              </div>
+
+              {/* navigations for mobile menu */}
+              <nav className={appShellStyles.mobileNav}>
+                <NavLink
+                  onClick={() => setMobileOpen(false)}
+                  to="/app/dashboard"
+                  className={({ isActive }) =>
+                    `${appShellStyles.mobileNavLink} ${
+                      isActive
+                        ? appShellStyles.mobileNavLinkActive
+                        : appShellStyles.mobileNavLinkInactive
+                    }`
+                  }
+                >
+                  {" "}
+                  <DashboardIcon /> Dashboard
+                </NavLink>
+                <NavLink
+                  onClick={() => setMobileOpen(false)}
+                  to="/app/invoices"
+                  className={({ isActive }) =>
+                    `${appShellStyles.mobileNavLink} ${
+                      isActive
+                        ? appShellStyles.mobileNavLinkActive
+                        : appShellStyles.mobileNavLinkInactive
+                    }`
+                  }
+                >
+                  {" "}
+                  <InvoiceIcon /> Invoices
+                </NavLink>
+                <NavLink
+                  onClick={() => setMobileOpen(false)}
+                  to="/app/create-invoice"
+                  className={({ isActive }) =>
+                    `${appShellStyles.mobileNavLink} ${
+                      isActive
+                        ? appShellStyles.mobileNavLinkActive
+                        : appShellStyles.mobileNavLinkInactive
+                    }`
+                  }
+                >
+                  {" "}
+                  <CreateIcon /> Create Invoice
+                </NavLink>
+                <NavLink
+                  onClick={() => setMobileOpen(false)}
+                  to="/app/business"
+                  className={({ isActive }) =>
+                    `${appShellStyles.mobileNavLink} ${
+                      isActive
+                        ? appShellStyles.mobileNavLinkActive
+                        : appShellStyles.mobileNavLinkInactive
+                    }`
+                  }
+                >
+                  {" "}
+                  <ProfileIcon /> Business Profile
+                </NavLink>
+              </nav>
+
+              <div className={appShellStyles.mobileLogoutsection}>
+                <button
+                  onClick={() => {
+                    setMobileOpen(false);
+                    logout();
+                  }}
+                  className={appShellStyles.mobileLogoutButton}
+                >
+                  <LogoutIcon /> Logout
+                </button>
+              </div>
+            </div>
+          </div>
+        )}
+
+        {/* main content navbar */}
+        <div className="flex-1 min-w-0">
+          <header
+            className={`${appShellStyles.header} ${
+              scrolled
+                ? appShellStyles.headerScrolled
+                : appShellStyles.headerNotScrolled
+            }`}
+          >
+            <div className={appShellStyles.heaerTopSection}>
+              <div classname={appShellStyles.headerContent}>
+                <button onClick={() => setMobileOpen(true)} className={appShellStyles.mobileMenuButton}>
+                  <svg
+                    className={appShellStyles.mobileMenuIcon}
+                    viewBox="0 0 24 24"
+                    fill="none"
+                    stroke="currentColor"
+                    strokeWidth="2"
+                  >
+                    <path d="M4 6h16M4 12h16M4 18h16" />
+                  </svg>
+                </button>
+                {!isMobile && (
+                  <button onClick={toggleSidebar} classname={appShellStyles.desktopCollapseButton}>
+                    <CollapseIcon collapsed={collapsed} />
+                  </button>
+                )}
+              </div>
+            </div>
+          </header>
+        </div>
       </div>
     </div>
   );
