@@ -1,8 +1,8 @@
-import  { appShellStyles } from "../assets/dummyStyles";
+import { appShellStyles } from "../assets/dummyStyles.js";
 import logo from "../assets/logo.png";
-import { useState, useEffect} from "react";
-import { useNavigate, Link } from "react-router-dom";
-import { useClerk, useUser } from "@clerk/clerk-react";
+import { useState, useEffect } from "react";
+import { useNavigate, Link, NavLink } from "react-router-dom";
+import { useClerk, useUser,  } from "@clerk/clerk-react";
 
 const AppShell = () => {
   const navigate = useNavigate();
@@ -20,7 +20,7 @@ const AppShell = () => {
   const [scrolled, setScrolled] = useState(false);
   const [isMobile, setIsMobile] = useState(false);
 
-    // Check screen size for responsive behavior
+  // Check screen size for responsive behavior
   useEffect(() => {
     const checkScreenSize = () => {
       setIsMobile(window.innerWidth < 1024);
@@ -51,6 +51,16 @@ const AppShell = () => {
     window.addEventListener("scroll", handleScroll);
     return () => window.removeEventListener("scroll", handleScroll);
   }, []);
+
+  //logout
+  const logout = async () =>{
+    try {
+        await signOut();
+    } catch(error){
+        console.warn("Signout error :", error)
+    }
+    navigate("/login");
+  }
 
   //togggle sidebar
   const toggleSidebar = () => setCollapsed(!collapsed);
@@ -181,7 +191,6 @@ const AppShell = () => {
     </NavLink>
   );
 
-
   return (
     <div className={appShellStyles.root}>
       <div className={appShellStyles.layout}>
@@ -208,8 +217,10 @@ const AppShell = () => {
                       alt="logo"
                       className={appShellStyles.logoImage}
                     />
-                    <div className="absolute inset-0 ronded-lg blur-sm
-                    group-hover:blur-md transition-all duration-300"/> 
+                    <div
+                      className="absolute inset-0 ronded-lg blur-sm
+                    group-hover:blur-md transition-all duration-300"
+                    />
                   </div>
                   {!collapsed && (
                     <div className={appShellStyles.logoTextContainer}>
@@ -220,10 +231,63 @@ const AppShell = () => {
                 </Link>
 
                 {!collapsed && (
-                  <button onClick={toggleSidebar} className={appShellStyles.collapseButton}>
-                    <CollapseIcon collapsed={collapsed}/>
+                  <button
+                    onClick={toggleSidebar}
+                    className={appShellStyles.collapseButton}
+                  >
+                    <CollapseIcon collapsed={collapsed} />
                   </button>
                 )}
+              </div>
+              {/* for navigation */}
+              <nav className={appShellStyles.nav}>
+                <SidebarLink to="/app/dashboard" icon={<DashboardIcon />}>
+                  Dashboard
+                </SidebarLink>
+                <SidebarLink to="/app/invoices" icon={<InvoiceIcon />}>
+                  Invoices
+                </SidebarLink>
+                <SidebarLink to="/app/create-invoice" icon={<CreateIcon />}>
+                  Create Invoice
+                </SidebarLink>
+                <SidebarLink to="/app/business" icon={<ProfileIcon />}>
+                  Business Profile
+                </SidebarLink>
+              </nav>
+            </div>
+            {/* toggle back */}
+            <div className={appShellStyles.userSection}>
+              <div
+                className={`${appShellStyles.userDivider} ${
+                  collapsed
+                    ? appShellStyles.userDividerCollapsed
+                    : appShellStyles.userDividerExpanded
+                }`}
+              >
+                {!collapsed ? (
+                  <button onClick={logout} className={appShellStyles.logoutButton}>
+                    <LogoutIcon className={appShellStyles.logoutIcon} />
+                    <span>Logout</span>
+                  </button>
+                ) : (
+                  <button onClick={logout}
+                  className="w-full flex items-center justify-center p-3
+                  rounded-xl text-red-600 hover:bg-red-50 hover:shadow-md transition-all
+                  duration-300 ">
+                      <LogoutIcon className="w-5 h-5 hover:scale-1100 transition-transform"/>
+                  </button>
+                )}
+
+                <div className={appShellStyles.collapseSection}>
+                  <button onClick={toggleSidebar} className={`${appShellStyles.collapseButtonInner} ${
+                    collapsed ? appShellStyles.collapseButtonCollapsed : ""
+                  }`}>
+                    {!collapsed && (
+                      <span>{collapsed ? "Expand": "Collapse"}</span>
+                    )}
+                    <CollapseIcon collapsed={collapsed}/>
+                  </button>
+                </div>
               </div>
             </div>
           </div>
