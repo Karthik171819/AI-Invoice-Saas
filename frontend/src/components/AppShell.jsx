@@ -1,7 +1,7 @@
 import { appShellStyles } from "../assets/dummyStyles.js";
 import logo from "../assets/logo.png";
 import { useState, useEffect } from "react";
-import { useNavigate, Link, NavLink } from "react-router-dom";
+import { useNavigate, Link, NavLink, Outlet } from "react-router-dom";
 import { useClerk, useUser } from "@clerk/clerk-react";
 
 const AppShell = () => {
@@ -66,7 +66,7 @@ const AppShell = () => {
   const toggleSidebar = () => setCollapsed(!collapsed);
 
   //display name helpers
-    const displayName = (() => {
+  const displayName = (() => {
     if (!user) return "User";
     const name = user.fullName || user.firstName || user.username || "";
     return name.trim() || (user.email || "").split?.("@")?.[0] || "User";
@@ -447,7 +447,10 @@ const AppShell = () => {
           >
             <div className={appShellStyles.heaerTopSection}>
               <div className={appShellStyles.headerContent}>
-                <button onClick={() => setMobileOpen(true)} className={appShellStyles.mobileMenuButton}>
+                <button
+                  onClick={() => setMobileOpen(true)}
+                  className={appShellStyles.mobileMenuButton}
+                >
                   <svg
                     className={appShellStyles.mobileMenuIcon}
                     viewBox="0 0 24 24"
@@ -459,21 +462,55 @@ const AppShell = () => {
                   </svg>
                 </button>
                 {!isMobile && (
-                  <button onClick={toggleSidebar} className={appShellStyles.desktopCollapseButton}>
+                  <button
+                    onClick={toggleSidebar}
+                    className={appShellStyles.desktopCollapseButton}
+                  >
                     <CollapseIcon collapsed={collapsed} />
                   </button>
                 )}
                 <div className={appShellStyles.welcomeContainer}>
                   <h2 className={appShellStyles.welcomeTitle}>
-                    Welcome Back, {" "}
+                    Welcome Back,{" "}
                     <span className={appShellStyles.welcomeName}>
                       {firstName()}
                     </span>
                   </h2>
+                  <p className={appShellStyles.welcomeSubtitle}>
+                    Ready to create amazing invoices?
+                  </p>
+                </div>
+              </div>
+            </div>
+            <div className={appShellStyles.headerActions}>
+              <button
+                onClick={() => navigate("app/create-invoice")}
+                className={appShellStyles.ctaButton}
+              >
+                <CreateIcon className={appShellStyles.ctaIcon} />
+                <span className="hidden xs:inline">Create Invoice</span>
+                <span className="xs:hidden">Create</span>
+              </button>
+              <div className={appShellStyles.userSectionDesktop}>
+                <div className={appShellStyles.userInfo}>
+                  <div className={appShellStyles.userName}>{displayName}</div>
+                  <div className={appShellStyles.userEmail}>{user?.email}</div>
+                </div>
+                <div className={appShellStyles.userAvatarContainer}>
+                  <div className={appShellStyles.userAvatar}>
+                    {initials()}
+                    <div className={appShellStyles.userAvatarBorder} />
+                  </div>
+                  <div className={appShellStyles.userStatus}></div>
                 </div>
               </div>
             </div>
           </header>
+          <main className={appShellStyles.main}>
+            <div className={appShellStyles.mainContainer}>
+              <Outlet />
+            </div>
+          </main>
         </div>
       </div>
     </div>
