@@ -115,6 +115,60 @@ const Hero = () => {
                 </svg>
               </a>
             </div>
+
+            {/* Features highlights */}
+            <div className={heroStyles.featuresGrid}>
+                {[
+                { icon: "🤖", label: "AI-Powered", desc: "Smart text parsing" },
+                {
+                  icon: "⚡",
+                  label: "Lightning Fast",
+                  desc: "Generate in seconds",
+                },
+                {
+                  icon: "🎨",
+                  label: "Professional",
+                  desc: "Branded templates",
+                },
+              ].map((feature, index) => (
+                  <div key={index} className={heroStyles.featureItem}>
+                    <div className={heroStyles.featureIcon}>{feature.icon}</div>
+                    <div className={heroStyles.featureText}>
+                      <div className={heroStyles.featureLabel}>
+                        {feature.label}
+                      </div>
+                      <div className={heroStyles.featureDesc}></div>
+                    </div>
+                  </div>
+              ))}
+            </div>
+          </div>
+          {/* Right side */}
+          <div className={heroStyles.demoColumn}>
+            <div className={heroStyles.demoFloating1}></div>
+            <div className={heroStyles.demoFloating2}></div>
+
+            <div className={heroStyles.demoContainer}>
+              <div classname={heroStyles.demoCard}>
+                <div className={heroStyles.cardHeader}>
+                  <div className=" space-y-1">
+                    <div className={heroStyles.cardLogoContainer}>
+                        <div className={heroStyles.cardLogo}>AI</div>
+                        <div>
+                          <div className={heroStyles.cardClientName}>
+                            {/* card client name */}
+                            ABC Solutions Pvt Ltd
+                          </div>
+                          <div className={heroStyles.cardClientGst}>
+                            GST: 17AAAPUG321C1ZV
+                          </div>
+                        </div>
+                    </div>
+                  </div>
+                  
+                </div> 
+              </div>
+            </div>
           </div>
         </div>
       </div>
