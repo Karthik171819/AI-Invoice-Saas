@@ -56,14 +56,34 @@ const AppShell = () => {
   const logout = async () => {
     try {
       await signOut();
-    } catch (error) {
-      console.warn("Signout error :", error);
+    } catch (err) {
+      console.warn("Signout error :", err);
     }
     navigate("/login");
   };
 
   //togggle sidebar
   const toggleSidebar = () => setCollapsed(!collapsed);
+
+  //display name helpers
+    const displayName = (() => {
+    if (!user) return "User";
+    const name = user.fullName || user.firstName || user.username || "";
+    return name.trim() || (user.email || "").split?.("@")?.[0] || "User";
+  })();
+
+  const firstName = () => {
+    const parts = displayName.split(" ").filter(Boolean);
+    return parts.length ? parts[0] : displayName;
+  };
+
+  const initials = () => {
+    const parts = displayName.split(" ").filter(Boolean);
+    if (parts.length === 1) return parts[0].charAt(0).toUpperCase();
+    return (
+      parts[0].charAt(0) + parts[parts.length - 1].charAt(0)
+    ).toUpperCase();
+  };
 
   //for icons
   const DashboardIcon = ({ className = "w-5 h-5" }) => (
@@ -443,6 +463,14 @@ const AppShell = () => {
                     <CollapseIcon collapsed={collapsed} />
                   </button>
                 )}
+                <div classname={appShellStyles.welcomeCntainer}>
+                  <h2 className={appShellStyles.welcomeTitle}>
+                    Welcome Back, {" "}
+                    <span classname={appShellStyles.welcomeName}>
+                      {firstName()}
+                    </span>
+                  </h2>
+                </div>
               </div>
             </div>
           </header>
