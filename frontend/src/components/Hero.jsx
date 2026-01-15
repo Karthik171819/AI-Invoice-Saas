@@ -118,7 +118,7 @@ const Hero = () => {
 
             {/* Features highlights */}
             <div className={heroStyles.featuresGrid}>
-                {[
+              {[
                 { icon: "🤖", label: "AI-Powered", desc: "Smart text parsing" },
                 {
                   icon: "⚡",
@@ -131,15 +131,15 @@ const Hero = () => {
                   desc: "Branded templates",
                 },
               ].map((feature, index) => (
-                  <div key={index} className={heroStyles.featureItem}>
-                    <div className={heroStyles.featureIcon}>{feature.icon}</div>
-                    <div className={heroStyles.featureText}>
-                      <div className={heroStyles.featureLabel}>
-                        {feature.label}
-                      </div>
-                      <div className={heroStyles.featureDesc}></div>
+                <div key={index} className={heroStyles.featureItem}>
+                  <div className={heroStyles.featureIcon}>{feature.icon}</div>
+                  <div className={heroStyles.featureText}>
+                    <div className={heroStyles.featureLabel}>
+                      {feature.label}
                     </div>
+                    <div className={heroStyles.featureDesc}></div>
                   </div>
+                </div>
               ))}
             </div>
           </div>
@@ -149,25 +149,110 @@ const Hero = () => {
             <div className={heroStyles.demoFloating2}></div>
 
             <div className={heroStyles.demoContainer}>
-              <div classname={heroStyles.demoCard}>
+              <div className={heroStyles.demoCard}>
                 <div className={heroStyles.cardHeader}>
                   <div className=" space-y-1">
                     <div className={heroStyles.cardLogoContainer}>
-                        <div className={heroStyles.cardLogo}>AI</div>
-                        <div>
-                          <div className={heroStyles.cardClientName}>
-                            {/* card client name */}
-                            ABC Solutions Pvt Ltd
-                          </div>
-                          <div className={heroStyles.cardClientGst}>
-                            GST: 17AAAPUG321C1ZV
-                          </div>
+                      <div className={heroStyles.cardLogo}>AI</div>
+                      <div>
+                        <div className={heroStyles.cardClientName}>
+                          {/* card client name */}
+                          ABC Solutions Pvt Ltd
                         </div>
+                        <div className={heroStyles.cardClientGst}>
+                          GST: 17AAAPUG321C1ZV
+                        </div>
+                      </div>
                     </div>
                   </div>
-                  
-                </div> 
+
+                  <div className={heroStyles.cardInvoiceInfo}>
+                    <div className={heroStyles.cardInvoiceLabel}>Invoice</div>
+                    <div className={heroStyles.cardInvoiceNumber}>
+                      #INV-0509
+                    </div>
+                    <div className={heroStyles.cardStatus}>Paid</div>
+                  </div>
+                </div>
+
+                <div className={heroStyles.itemsContainer}>
+                  {[
+                    {
+                      description: "Website Design & Development",
+                      amount: "₹15,000",
+                    },
+                    { description: "Consultation (2 hours)", amount: "₹3,000" },
+                    { description: "Premium Hosting Setup", amount: "₹2,500" },
+                  ].map((item, index) => (
+                    <div key={index} className={heroStyles.itemRow}>
+                      <div className="flex items-center gap-3">
+                        <div className={heroStyles.itemDot}></div>
+                        <span className={heroStyles.itemDescription}>
+                          {item.description}
+                        </span>
+                      </div>
+                      <div>
+                        <span className={heroStyles.itemAmount}>
+                          {item.amount}
+                        </span>
+                      </div>
+                    </div>
+                  ))}
+                </div>
+
+                <div className={heroStyles.calculationContainer}>
+                  <div className={heroStyles.calculationRow}>
+                    <span className={heroStyles.calculationLabel}>
+                      Subtotal
+                    </span>
+                    <span className={heroStyles.calculationValue}>₹20,500</span>
+                  </div>
+                  <div className={heroStyles.calculationRow}>
+                    <span className={heroStyles.calculationLabel}>
+                      GST (18%)
+                    </span>
+                    <span className={heroStyles.calculationValue}>₹3,240</span>
+                  </div>
+                  <div className={heroStyles.totalRow}>
+                    <span className={heroStyles.totalLabel}>Total Amount</span>
+                    <span className={heroStyles.totalValue}>₹23,740</span>
+                  </div>
+                </div>
+
+                <div className={heroStyles.actionButtons}>
+                  <button className={heroStyles.previewButton}>
+                    <span className={heroStyles.previewButtonText}>
+                      Preview
+                    </span>
+                  </button>
+                  <button className={heroStyles.sendButton}>
+                    <span className={heroStyles.sendButtonText}>
+                      Send Invoice
+                    </span>
+                  </button>
+                </div>
               </div>
+
+              <div className={heroStyles.aiIndicator}>
+                <div className={heroStyles.aiIndicatorContent}>
+                  <div className={heroStyles.aiIndicatorDot}></div>
+                  <span>AI parsed from</span>
+                  <span className={heroStyles.aiIndicatorText}>
+                    "Invoice for web design - "₹15,000....."
+                  </span>
+                </div>
+              </div>
+              <div className={heroStyles.cornerAccent1}></div>
+              <div className={heroStyles.cornerAccent2}></div>
+            </div>
+            <div className={heroStyles.cardBackground}></div>
+          </div>
+        </div>
+        <div className={heroStyles.scrollIndicator}>
+          <div className={heroStyles.scrollContainer}>
+            <span className={heroStyles.scrollText}>Scroll to explore</span>
+            <div className={heroStyles.scrollBar}>
+              <div className={heroStyles.scrollDot}></div>
             </div>
           </div>
         </div>
