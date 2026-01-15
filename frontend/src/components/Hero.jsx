@@ -10,10 +10,10 @@ const Hero = () => {
 
       <div className={heroStyles.gridPattern}></div>
       <div className={heroStyles.container}>
-        <div className={heroStyles.grid}>
-          <div className={heroStyles.containet}>
+        <div className={heroStyles.grid} >
+          <div className={heroStyles.content}>
             <div className={heroStyles.containerInner}>
-              <div classname={heroStyles.badge}>
+              <div className={heroStyles.badge}>
                 <div className={heroStyles.badgeDot}></div>
                 <span className={heroStyles.badgeText}>
                     AI-Powered Invoicing Platform 
