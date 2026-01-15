@@ -446,7 +446,7 @@ const AppShell = () => {
             }`}
           >
             <div className={appShellStyles.heaerTopSection}>
-              <div classname={appShellStyles.headerContent}>
+              <div className={appShellStyles.headerContent}>
                 <button onClick={() => setMobileOpen(true)} className={appShellStyles.mobileMenuButton}>
                   <svg
                     className={appShellStyles.mobileMenuIcon}
@@ -459,14 +459,14 @@ const AppShell = () => {
                   </svg>
                 </button>
                 {!isMobile && (
-                  <button onClick={toggleSidebar} classname={appShellStyles.desktopCollapseButton}>
+                  <button onClick={toggleSidebar} className={appShellStyles.desktopCollapseButton}>
                     <CollapseIcon collapsed={collapsed} />
                   </button>
                 )}
-                <div classname={appShellStyles.welcomeCntainer}>
+                <div className={appShellStyles.welcomeContainer}>
                   <h2 className={appShellStyles.welcomeTitle}>
                     Welcome Back, {" "}
-                    <span classname={appShellStyles.welcomeName}>
+                    <span className={appShellStyles.welcomeName}>
                       {firstName()}
                     </span>
                   </h2>
