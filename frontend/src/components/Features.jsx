@@ -107,7 +107,7 @@ const Features = () => {
                 <p className={featuresStyles.subtitle}>
                     A minimal, intelligent interface that focuses on what truly matters - 
                     create, send, and track invoices effortlessly while maintaining 
-                    professional excellence.
+                    The professional excellence.
                 </p>
             </div>
             <div className={featuresStyles.featuresGrid}>
