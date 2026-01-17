@@ -144,7 +144,6 @@ const Features = () => {
           <button className={featuresStyles.bottomCtaButton}>
             <span>{featuresStyles.bottomCtaButtonText}</span>
 
-            
             <svg
               className={featuresStyles.bottomCtaButtonIcon}
               fill="none"
@@ -158,7 +157,7 @@ const Features = () => {
                 d="M9 5l7 7-7 7"
               />
             </svg>
-            
+
           </button>
         </div>
       </div>
