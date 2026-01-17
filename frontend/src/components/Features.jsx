@@ -139,6 +139,28 @@ const Features = () => {
             />
           ))}
         </div>
+        {/*bottom  */}
+        <div className={featuresStyles.bottomCtaContainer}>
+          <button className={featuresStyles.bottomCtaButton}>
+            <span>{featuresStyles.bottomCtaButtonText}</span>
+
+            
+            <svg
+              className={featuresStyles.bottomCtaButtonIcon}
+              fill="none"
+              viewBox="0 0 24 24"
+              stroke="currentColor"
+            >
+              <path
+                strokeLinecap="round"
+                strokeLinejoin="round"
+                strokeWidth={2}
+                d="M9 5l7 7-7 7"
+              />
+            </svg>
+            
+          </button>
+        </div>
       </div>
     </section>
   );
