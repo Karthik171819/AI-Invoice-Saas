@@ -13,7 +13,10 @@ const Home = () => {
           <div className="">
             <Features/>
           </div>
-          <Pricing/>
+          <div>
+             <Pricing/>
+          </div>
+         
         </main>
     </div>
   )
