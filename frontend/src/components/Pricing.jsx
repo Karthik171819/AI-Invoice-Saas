@@ -114,6 +114,14 @@ const Pricing = () => {
 
   const currentPlans = plans[billingPeriod];
 
+  function handleCtaClick (planeMeta, flags = {} ) {
+    if(flags.openSignInFallback || !isSignedIn){
+      if(clerk && typeof clerk.openSignIn === "functions" ){
+        clerk.
+      }
+    }
+  }
+
   return (
     <div>Pricing</div>
   )
