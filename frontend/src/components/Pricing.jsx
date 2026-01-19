@@ -117,7 +117,7 @@ const Pricing = () => {
   function handleCtaClick (planeMeta, flags = {} ) {
     if(flags.openSignInFallback || !isSignedIn){
       if(clerk && typeof clerk.openSignIn === "functions" ){
-        clerk.
+        
       }
     }
   }
