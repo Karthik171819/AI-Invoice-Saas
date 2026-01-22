@@ -5,6 +5,7 @@ import { Link, useNavigate } from "react-router-dom";
 import { useState, useRef } from "react";
 import { useUser, useAuth, useClerk, SignedOut } from "@clerk/clerk-react";
 
+//Navbar
 const Navbar = () => {
   const [open, setOpen] = useState(false);
   const [profileOpen, setProfileOpen] = useState(false);
