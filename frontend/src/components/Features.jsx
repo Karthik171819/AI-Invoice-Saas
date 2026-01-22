@@ -1,6 +1,8 @@
 import React from "react";
 import { featuresStyles } from "../assets/dummyStyles.js";
 
+//Features
+
 const FeatureCard = ({ title, desc, icon, delay = 0 }) => (
   <div
     className={featuresStyles.featureCard}
