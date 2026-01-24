@@ -130,8 +130,22 @@ const Pricing = () => {
   }
 
   return (
-    <div>Pricing</div>
-  )
-}
+    <section id='pricing' className={pricingStyles.section}>
+      <div className={pricingStyles.bgElement1}></div>
+      <div className={pricingStyles.bgElement2}></div>
+      <div className={pricingStyles.bgElement3}></div>
 
-export default Pricing
+      <div className={pricingStyles.container}>
+        <div className={pricingStyles.headerContainer}>
+          <div className={pricingStyles.badge}>
+            <span classname={pricingStyles.badgeDot}></span>
+            <span className={pricingStyles.badgeText}>Transparent Pricing</span>
+
+          </div>
+        </div>
+      </div>
+    </section>
+  );
+};
+
+export default Pricing;
