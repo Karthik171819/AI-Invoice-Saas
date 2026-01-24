@@ -118,9 +118,15 @@ const Pricing = () => {
     if(flags.openSignInFallback || !isSignedIn){
       if(clerk && typeof clerk.openSignIn === "functions" ){
         clerk.openSignIn({redirectUrl: "app/create-invoice"});
-        
       }
+      else {
+        navigate("/sign-in");
+      }
+      return;
     }
+    navigate("app/create-invoice", {
+      state: {fromPlan: planMeta?.title || null},
+    })
   }
 
   return (
