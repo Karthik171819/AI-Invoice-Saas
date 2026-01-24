@@ -140,8 +140,15 @@ const Pricing = () => {
           <div className={pricingStyles.badge}>
             <span classname={pricingStyles.badgeDot}></span>
             <span className={pricingStyles.badgeText}>Transparent Pricing</span>
-
           </div>
+
+          <h2 className={pricingStyles.title}>
+            Simple,{" "}
+            <span className={pricingStyles.titleGradient}>Fair Pricing</span>
+          </h2>
+          <p className={pricingStyles.description}>
+            Start free, upgrade as you grow. No hidden fees, no surprise charges.
+          </p>
         </div>
       </div>
     </section>
