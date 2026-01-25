@@ -1,16 +1,16 @@
-import React from 'react'
+import React from "react";
 import { useState } from "react";
-import {useAuth, useClerk} from '@clerk/clerk-react';
-import { useNavigate } from 'react-router-dom';
-import {pricingStyles, pricingCardStyles} from '../assets/dummyStyles.js'
+import { useAuth, useClerk } from "@clerk/clerk-react";
+import { useNavigate } from "react-router-dom";
+import { pricingStyles, pricingCardStyles } from "../assets/dummyStyles.js";
 
 const Pricing = () => {
-    const [billingPeriod, setBillingPeriod] = useState("monthly");
-    const clerk = useClerk();
-    const {isSignedIn} =useAuth();
-    const navigate = useNavigate();
+  const [billingPeriod, setBillingPeriod] = useState("monthly");
+  const clerk = useClerk();
+  const { isSignedIn } = useAuth();
+  const navigate = useNavigate();
 
-     const plans = {
+  const plans = {
     monthly: [
       {
         title: "Starter",
@@ -114,23 +114,22 @@ const Pricing = () => {
 
   const currentPlans = plans[billingPeriod];
 
-  function handleCtaClick (planeMeta, flags = {} ) {
-    if(flags.openSignInFallback || !isSignedIn){
-      if(clerk && typeof clerk.openSignIn === "functions" ){
-        clerk.openSignIn({redirectUrl: "app/create-invoice"});
-      }
-      else {
+  function handleCtaClick(planeMeta, flags = {}) {
+    if (flags.openSignInFallback || !isSignedIn) {
+      if (clerk && typeof clerk.openSignIn === "functions") {
+        clerk.openSignIn({ redirectUrl: "app/create-invoice" });
+      } else {
         navigate("/sign-in");
       }
       return;
     }
     navigate("app/create-invoice", {
-      state: {fromPlan: planMeta?.title || null},
-    })
+      state: { fromPlan: planMeta?.title || null },
+    });
   }
 
   return (
-    <section id='pricing' className={pricingStyles.section}>
+    <section id="pricing" className={pricingStyles.section}>
       <div className={pricingStyles.bgElement1}></div>
       <div className={pricingStyles.bgElement2}></div>
       <div className={pricingStyles.bgElement3}></div>
@@ -147,16 +146,21 @@ const Pricing = () => {
             <span className={pricingStyles.titleGradient}>Fair Pricing</span>
           </h2>
           <p className={pricingStyles.description}>
-            Start free, upgrade as you grow. No hidden fees, no surprise charges.
+            Start free, upgrade as you grow. No hidden fees, no surprise
+            charges.
           </p>
-          <div  style={{marginTop: 12}} className={pricingStyles.billingToggle}>
-            <button onClick={() => setBillingPeriod("monthly")}
+          <div
+            style={{ marginTop: 12 }}
+            className={pricingStyles.billingToggle}
+          >
+            <button
+              onClick={() => setBillingPeriod("monthly")}
               className={`${pricingStyles.billingButton} ${
-                
-              }`}>
-
-            </button>
-
+                billingPeriod === "monthly"
+                  ? pricingStyles.billingButtonActive
+                  : pricingStyles.billingButtonInactive
+              }`}
+            ></button>
           </div>
         </div>
       </div>
