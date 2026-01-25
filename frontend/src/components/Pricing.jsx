@@ -138,7 +138,7 @@ const Pricing = () => {
       <div className={pricingStyles.container}>
         <div className={pricingStyles.headerContainer}>
           <div className={pricingStyles.badge}>
-            <span classname={pricingStyles.badgeDot}></span>
+            <span className={pricingStyles.badgeDot}></span>
             <span className={pricingStyles.badgeText}>Transparent Pricing</span>
           </div>
 
@@ -149,6 +149,15 @@ const Pricing = () => {
           <p className={pricingStyles.description}>
             Start free, upgrade as you grow. No hidden fees, no surprise charges.
           </p>
+          <div  style={{marginTop: 12}} className={pricingStyles.billingToggle}>
+            <button onClick={() => setBillingPeriod("monthly")}
+              className={`${pricingStyles.billingButton} ${
+                
+              }`}>
+
+            </button>
+
+          </div>
         </div>
       </div>
     </section>
