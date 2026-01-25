@@ -4,6 +4,19 @@ import { useAuth, useClerk } from "@clerk/clerk-react";
 import { useNavigate } from "react-router-dom";
 import { pricingStyles, pricingCardStyles } from "../assets/dummyStyles.js";
 
+const PricingCard = ({
+  title,
+  price,
+  period,
+  description,
+  features = [],
+  isPopular = false,
+  isAnnual = false,
+  delay = 0,
+  onCtaClick,
+
+}) => ()
+
 const Pricing = () => {
   const [billingPeriod, setBillingPeriod] = useState("monthly");
   const clerk = useClerk();
@@ -160,8 +173,23 @@ const Pricing = () => {
                   ? pricingStyles.billingButtonActive
                   : pricingStyles.billingButtonInactive
               }`}
-            ></button>
+            > Monthly </button>
+
+            <button
+              onClick={() => setBillingPeriod("annual")}
+              className={`${pricingStyles.billingButton} ${
+                billingPeriod === "annual"
+                  ? pricingStyles.billingButtonActive
+                  : pricingStyles.billingButtonInactive
+              }`}
+            > Annual 
+              <span className={pricingStyles.billingBadge}>Save 20%</span>
+            </button>
           </div>
+        </div>
+
+        <div className={}>
+
         </div>
       </div>
     </section>
