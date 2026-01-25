@@ -20,6 +20,7 @@ const PricingCard = ({
    className={`${pricingCardStyles.card} ${
     isPopular ? pricingCardStyles.cardPopular : pricingCardStyles.cardRegular
    }`} style={{transitionDelay: `${delay}ms`}}>
+    {}
     
   </div>
 )
