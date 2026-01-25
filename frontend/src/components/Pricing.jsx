@@ -15,7 +15,14 @@ const PricingCard = ({
   delay = 0,
   onCtaClick,
 
-}) => ()
+}) => (
+  <div
+   className={`${pricingCardStyles.card} ${
+    isPopular ? pricingCardStyles.cardPopular : pricingCardStyles.cardRegular
+   }`} style={{transitionDelay: `${delay}ms`}}>
+    
+  </div>
+)
 
 const Pricing = () => {
   const [billingPeriod, setBillingPeriod] = useState("monthly");
