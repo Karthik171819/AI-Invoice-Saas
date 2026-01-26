@@ -19,9 +19,21 @@ const PricingCard = ({
   <div
    className={`${pricingCardStyles.card} ${
     isPopular ? pricingCardStyles.cardPopular : pricingCardStyles.cardRegular
-   }`} style={{transitionDelay: `${delay}ms`}}>
-    {}
-    
+   }`}
+    style={{transitionDelay: `${delay}ms`}}
+   >
+    {isPopular && (
+      <div className={pricingCardStyles.popularBadge}>
+        <div className={pricingCardStyles.popularBadgeContent}>
+          Most Popular
+        </div>
+      </div>
+    )}
+    {isPopular && <div className={pricingCardStyles.gradientOverlay}/>}
+    <div className={pricingCardStyles.animatedBorder}></div>
+    <div>
+      
+    </div>
   </div>
 )
 
