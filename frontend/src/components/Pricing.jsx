@@ -1,6 +1,6 @@
 import React from "react";
 import { useState } from "react";
-import { useAuth, useClerk } from "@clerk/clerk-react";
+import { useAuth, useClerk, SignedIn, SignedOut } from "@clerk/clerk-react";
 import { useNavigate } from "react-router-dom";
 import { pricingStyles, pricingCardStyles } from "../assets/dummyStyles.js";
 
@@ -51,7 +51,7 @@ const PricingCard = ({
             {price}
           </span>
           {period && (
-            <span className={pricindCardStyles.period}>/{period}</span>
+            <span className={pricingCardStyles.period}>/{period}</span>
           )}
         </div>
           {isAnnual && (
@@ -326,7 +326,16 @@ const Pricing = () => {
         </div>
 
         <div className={pricingStyles.grid}>
-
+            {currentPlans.map((plan, index) =>(
+              <PricingCard key={plan.title}
+              {...plan}
+              delay={index * 100}
+              onCtaClick={handleCtaClick}
+              />
+            ))}
+        </div>
+        <div>
+          
         </div>
       </div>
     </section>
