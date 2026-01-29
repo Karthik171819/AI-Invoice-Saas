@@ -31,9 +31,126 @@ const PricingCard = ({
     )}
     {isPopular && <div className={pricingCardStyles.gradientOverlay}/>}
     <div className={pricingCardStyles.animatedBorder}></div>
-    <div>
-      
+    <div className={pricingCardStyles.content}>
+      <div className={pricingCardStyles.header}>
+        <h3 className={`${pricingCardStyles.title} ${
+          isPopular
+          ? pricingCardStyles.titlePopular
+          : pricingCardStyles.titleRegular
+        }`}>{title}
+        </h3>
+        <p className={pricingCardStyles.description}>{description}</p>
+      </div>
+      <div className={pricingCardStyles.priceContainer}>
+        <div className={pricingCardStyles.priceWrapper}>
+          <span className={`${pricingCardStyles.price} ${
+            isPopular
+            ? pricingCardStyles.pricePopular
+            : pricingCardStyles.priceRegular
+          }`}>
+            {price}
+          </span>
+          {period && (
+            <span className={pricindCardStyles.period}>/{period}</span>
+          )}
+        </div>
+          {isAnnual && (
+            <div className={pricingCardStyles.annualBadge}>Save 20% annually</div>
+          )}
+      </div>
+       <ul className={pricingCardStyles.featuresList}>
+        {features.map((feature, index) => (
+          <li key={index} className={pricingCardStyles.featureItem}>
+            <div
+              className={`
+                ${pricingCardStyles.featureIcon}
+                ${
+                  isPopular
+                    ? pricingCardStyles.featureIconPopular
+                    : pricingCardStyles.featureIconRegular
+                }
+              `}
+            >
+              <svg
+                className="w-3 h-3"
+                fill="none"
+                viewBox="0 0 24 24"
+                stroke="currentColor"
+              >
+                <path
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                  strokeWidth={3}
+                  d="M5 13l4 4L19 7"
+                />
+              </svg>
+            </div>
+            <span className={pricingCardStyles.featureText}>{feature}</span>
+          </li>
+        ))}
+      </ul>
+
+      {/* CTA area: show different button/label depending on auth state */}
+      <div style={{ marginTop: 12 }}>
+        <SignedIn>
+          <button
+            type="button"
+            onClick={() =>
+              onCtaClick && onCtaClick({ title, isPopular, isAnnual })
+            }
+            className={`
+              ${pricingCardStyles.ctaButton}
+              ${
+                isPopular
+                  ? pricingCardStyles.ctaButtonPopular
+                  : pricingCardStyles.ctaButtonRegular
+              }
+            `}
+          >
+            <span
+              className={`
+                ${pricingCardStyles.ctaButtonText}
+                ${
+                  isPopular
+                    ? pricingCardStyles.ctaButtonTextPopular
+                    : pricingCardStyles.ctaButtonTextRegular
+                }
+              `}
+            >
+              {isPopular ? "Get Started" : "Choose Plan"}
+            </span>
+          </button>
+        </SignedIn>
+
+        <SignedOut>
+          <button
+            type="button"
+            onClick={() =>
+              onCtaClick &&
+              onCtaClick(
+                { title, isPopular, isAnnual },
+                { openSignInFallback: true }
+              )
+            }
+            className={`
+              ${pricingCardStyles.ctaButton}
+              ${pricingCardStyles.ctaButtonRegular}
+            `}
+          >
+            <span className={pricingCardStyles.ctaButtonText}>
+              Sign in to get started
+            </span>
+          </button>
+        </SignedOut>
+      </div>
     </div>
+
+    {isPopular && (
+      <>
+        <div className={pricingCardStyles.cornerAccent1}></div>
+         <div className={pricingCardStyles.cornerAccent2}></div>
+      </>
+    )}
   </div>
 )
 
@@ -208,7 +325,7 @@ const Pricing = () => {
           </div>
         </div>
 
-        <div className={}>
+        <div className={pricingStyles.grid}>
 
         </div>
       </div>
