@@ -334,8 +334,34 @@ const Pricing = () => {
               />
             ))}
         </div>
-        <div>
-          
+        <div className={pricingStyles.additionalInfo}>
+          <div className={pricingStyles.featuresCard}>
+            <h3 className={pricingStyles.featuresTitle}>All plans include</h3>
+            <div className={pricingStyles.featuresGrid}>
+                {[
+                "Secure cloud storage",
+                "Mobile-friendly interface",
+                "Automatic backups",
+                "Real-time notifications",
+                "Multi-currency support",
+                "Tax calculation",
+              ].map((feature, index) => (
+                <div key={index} className={pricingStyles.featureItem}>
+                  <div className={pricingStyles.featureDot}></div>
+                  <span>{feature}</span>
+                </div>
+              ))}
+            </div>
+          </div>
+        </div>
+        <div className={pricingStyles.faqCta}>
+          <p className={pricingStyles.faqText}>
+              Have questions about pricing?{" "}
+              <button className={pricingStyles.contactLink}>
+                Contact our sales team → 
+              </button>
+          </p>
+
         </div>
       </div>
     </section>
