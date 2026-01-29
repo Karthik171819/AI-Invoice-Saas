@@ -992,7 +992,7 @@ export const authStyles = {
 // src/assets/dummyStyles.js (add these to the existing export)
 export const navbarStyles = {
   // Header
-  header: "fixed w-full z-30 bg-white/80 backdrop-blur-sm border-b border-gray-100",
+  navbar: "fixed top-0 w-full z-30 bg-white/80 backdrop-blur-sm border-b border-gray-100",
   container: "max-w-7xl mx-auto px-6",
   nav: "flex items-center justify-between h-16",
   
