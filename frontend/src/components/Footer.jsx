@@ -8,7 +8,10 @@ const Footer = () => {
             <div className={footerStyles.copyright}>
                 &copy; {new Date().getFullYear()} Invoice AI • Built by AI Digital Services
             </div>
-            
+            <div className={footerStyles.links}>
+                <a href="/terms" className={footerStyles.link}>Terms</a>
+                <a href="/privacy" className={footerStyles.link}>Privacy</a>
+            </div>
         </div>
     </footer>
   )
