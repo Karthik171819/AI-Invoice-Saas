@@ -1,4 +1,4 @@
-import React, { useCallback } from 'react'
+import React, { useCallback, useState } from 'react'
 import { useNavigate } from 'react-router-dom'
 import { useAuth } from "@clerk/express";
 import { dashboardStyles } from '../assets/dummyStyles.js'
@@ -149,7 +149,13 @@ const Dashboard = () => {
         return null;
 
       }
-  })
+  }, [getToken]);
+
+  const [storedInvoices, setStoredInvoices] = useState([]);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState(null);
+
+  const [businessProfile, setBusinessProfile] = useState(null);
   return (
     <div>Dashboard</div>
   )
