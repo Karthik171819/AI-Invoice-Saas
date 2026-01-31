@@ -1,5 +1,6 @@
-import React from 'react'
+import React, { useCallback } from 'react'
 import { useNavigate } from 'react-router-dom'
+import { useAuth } from "@clerk/express";
 import { dashboardStyles } from '../assets/dummyStyles.js'
 
 //backend connection
@@ -134,7 +135,21 @@ function formatDate(dateInput) {
 
 const Dashboard = () => {
   const navigate = useNavigate();
-  const 
+  const { getToken, isSignedIn } = useAuth();
+  //to obtain the token from local storage
+  const obtainToken = useCallback( async () => {
+      if(typeof getToken !== "function") return null;
+      try{
+        let token = await getToken({template: "default"}).catch(() => null);
+        if(!token){
+          token = await getToken({forceRefresh: true}).catch(() => null);
+        }
+        return token;
+      } catch {
+        return null;
+
+      }
+  })
   return (
     <div>Dashboard</div>
   )
