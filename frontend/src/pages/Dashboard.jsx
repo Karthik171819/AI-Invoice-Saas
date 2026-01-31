@@ -215,6 +215,35 @@ const Dashboard = () => {
     }
   },[obtainToken]);
 
+  //fetch user profile
+  const fetchBusinessProfile = useCallback(async () => {
+    try{
+      const token = await obtainToken();
+      if(!token) return;
+
+      //youre fetching from backend router to get the me profile
+      const res = await fetch(`${API_BASE}/api/businessProfile/me`, {
+        method: "GET",
+        headers: {
+          Authorization: `Bearer ${token}`,
+          Accept: "application/json",
+        },
+      });
+  if (res.status === 401) {
+        // silently ignore; profile not available
+        return;
+      }
+      if (!res.ok) return;
+      const json = await res.json().catch(() => null);
+      const data = json?.data || null;
+      if (data) setBusinessProfile(data);
+    } catch (err) {
+      // non-fatal
+      console.warn("Failed to fetch business profile:", err);
+    }
+  }, [obtainToken]);
+  
+
   return (
     <div>Dashboard</div>
   )
