@@ -156,9 +156,28 @@ const Dashboard = () => {
   const [error, setError] = useState(null);
 
   const [businessProfile, setBusinessProfile] = useState(null);
+
+  //fetch invoices from backends from database
+  const fetchInvoices = useCallback(async () =>{
+    setLoading(true);
+    setError(null);
+
+    try{
+
+      const token = await obtainToken();
+      const headers = {Accept: "application/json"};
+      if(token) headers["Authorization"] = `Bearer ${token}`;
+
+      const res = await fetch(`${API_BASE}/api/invoice`,{
+        method: "GET",
+        headers,
+      });
+    } catch (error) {}
+  });
+
   return (
     <div>Dashboard</div>
   )
-}
+};
 
-export default Dashboard
+export default Dashboard;
