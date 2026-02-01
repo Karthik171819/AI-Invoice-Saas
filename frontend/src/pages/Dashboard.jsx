@@ -341,7 +341,7 @@ const Dashboard = () => {
     return clientName ? clientName.charAt(0).toUpperCase() : "C";
   };
 
-  //navigate us to invoice preview
+  //navigate us to invoice preview will do
   function openInvoice(invRow) {
     const payload = invRow;
     navigate(`/app/invoices/${invRow.id}`, { state: { invoice: payload } });
