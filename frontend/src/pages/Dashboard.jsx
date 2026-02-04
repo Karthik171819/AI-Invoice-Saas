@@ -417,12 +417,21 @@ const Dashboard = () => {
                 <span className={dashboardStyles.quickStatsValue}>
                   {kpis.totalInvoices > 0
                     ? ((kpis.paidCount / kpis.totalInvoices) * 100).toFixed(1)
-                    : 0} %
+                    : 0}{" "}
+                  %
                 </span>
               </div>
               <div className={dashboardStyles.quickStatsRow}>
                 <span className={dashboardStyles.quickStatsLabel}>
-                    Avg. Invoice
+                  Avg. Invoice
+                </span>
+                <span className={dashboardStyles.quickStatsValue}>
+                  {currencyFmt(
+                    kpis.totalInvoices > 0
+                      ? (kpis.totalPaid + kpis.totalUnpaid) / kpis.totalInvoices
+                      : 0,
+                    "INR",
+                  )}
                 </span>
               </div>
             </div>
