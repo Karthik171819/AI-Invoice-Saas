@@ -1,11 +1,11 @@
-import React, { useCallback, useState, useEffect, useMemo } from 'react';
-import { useNavigate } from 'react-router-dom';
+import React, { useCallback, useState, useEffect, useMemo } from "react";
+import { useNavigate } from "react-router-dom";
 import { useAuth } from "@clerk/clerk-react";
-import { dashboardStyles } from '../assets/dummyStyles.js';
-import KpiCard from '../components/KpiCard.jsx';
+import { dashboardStyles } from "../assets/dummyStyles.js";
+import KpiCard from "../components/KpiCard.jsx";
 
 //backend connection
-const API_BASE = 'http://localhost:4000';
+const API_BASE = "http://localhost:4000";
 
 /* normalize client object */
 function normalizeClient(raw) {
@@ -136,20 +136,19 @@ function formatDate(dateInput) {
 
 const Dashboard = () => {
   const navigate = useNavigate();
-  const { getToken, isSignedIn, } = useAuth();
+  const { getToken, isSignedIn } = useAuth();
   //to obtain the token from local storage
-  const obtainToken = useCallback( async () => {
-      if(typeof getToken !== "function") return null;
-      try{
-        let token = await getToken({template: "default"}).catch(() => null);
-        if(!token){
-          token = await getToken({forceRefresh: true}).catch(() => null);
-        }
-        return token;
-      } catch {
-        return null;
-
+  const obtainToken = useCallback(async () => {
+    if (typeof getToken !== "function") return null;
+    try {
+      let token = await getToken({ template: "default" }).catch(() => null);
+      if (!token) {
+        token = await getToken({ forceRefresh: true }).catch(() => null);
       }
+      return token;
+    } catch {
+      return null;
+    }
   }, [getToken]);
 
   const [storedInvoices, setStoredInvoices] = useState([]);
@@ -159,22 +158,21 @@ const Dashboard = () => {
   const [businessProfile, setBusinessProfile] = useState(null);
 
   //fetch invoices from backends from database
-  const fetchInvoices = useCallback(async () =>{
+  const fetchInvoices = useCallback(async () => {
     setLoading(true);
     setError(null);
 
-    try{
-
+    try {
       const token = await obtainToken();
-      const headers = {Accept: "application/json"};
-      if(token) headers["Authorization"] = `Bearer ${token}`;
+      const headers = { Accept: "application/json" };
+      if (token) headers["Authorization"] = `Bearer ${token}`;
 
-      const res = await fetch(`${API_BASE}/api/invoice`,{
+      const res = await fetch(`${API_BASE}/api/invoice`, {
         method: "GET",
         headers,
       });
       const json = await res.json().catch(() => null);
-          if (res.status === 401) {
+      if (res.status === 401) {
         // unauthorized - prompt login
         setError("Unauthorized. Please sign in.");
         setStoredInvoices([]);
@@ -210,17 +208,16 @@ const Dashboard = () => {
       console.error("Failed to fetch invoices:", err);
       setError(err?.message || "Failed to load invoices");
       setStoredInvoices([]);
-    } 
-    finally {
+    } finally {
       setLoading(false);
     }
-  },[obtainToken]);
+  }, [obtainToken]);
 
   //fetch user profile
   const fetchBusinessProfile = useCallback(async () => {
-    try{
+    try {
       const token = await obtainToken();
-      if(!token) return;
+      if (!token) return;
 
       //youre fetching from backend router to get the me profile
       const res = await fetch(`${API_BASE}/api/businessProfile/me`, {
@@ -230,7 +227,7 @@ const Dashboard = () => {
           Accept: "application/json",
         },
       });
-  if (res.status === 401) {
+      if (res.status === 401) {
         // silently ignore; profile not available
         return;
       }
@@ -243,21 +240,21 @@ const Dashboard = () => {
       console.warn("Failed to fetch business profile:", err);
     }
   }, [obtainToken]);
-  
+
   useEffect(() => {
     fetchInvoices();
     fetchBusinessProfile();
 
-    function onStorage(e){
-      if(e.key === "invoice_v1") fetchInvoices();
+    function onStorage(e) {
+      if (e.key === "invoice_v1") fetchInvoices();
     }
     window.addEventListener("storage", onStorage);
     return () => window.removeEventListener("storage", onStorage);
   }, [fetchInvoices, fetchBusinessProfile, isSignedIn]);
 
   //hard code rates value
-   const HARD_RATES = {
-    USD_TO_INR: 90, 
+  const HARD_RATES = {
+    USD_TO_INR: 90,
   };
 
   //conert amt to inr
@@ -322,7 +319,7 @@ const Dashboard = () => {
       .sort(
         (a, b) =>
           (Date.parse(b.issueDate || 0) || 0) -
-          (Date.parse(a.issueDate || 0) || 0)
+          (Date.parse(a.issueDate || 0) || 0),
       )
       .slice(0, 5);
   }, [storedInvoices]);
@@ -343,7 +340,7 @@ const Dashboard = () => {
   };
 
   //navigate us to invoice preview
-  
+
   function openInvoice(invRow) {
     const payload = invRow;
     navigate(`/app/invoices/${invRow.id}`, { state: { invoice: payload } });
@@ -365,27 +362,52 @@ const Dashboard = () => {
         <div className="p-6">
           <div className="text-red-600 mb-3">Error: {error}</div>
           <div className="flex gap-2">
-            <button onClick={fetchInvoices} className="py-1 px-3 bg-blue-600 text-white rounded">
+            <button
+              onClick={fetchInvoices}
+              className="py-1 px-3 bg-blue-600 text-white rounded"
+            >
               Retry
             </button>
             {String(error).toLowerCase().includes("unauthorized") && (
-              <button onClick={() => navigate("/login")} className="py-1 px-3 bg-green-600 text-white rounded">
+              <button
+                onClick={() => navigate("/login")}
+                className="py-1 px-3 bg-green-600 text-white rounded"
+              >
                 Sign In
-                </button>
+              </button>
             )}
           </div>
         </div>
       ) : null}
 
       <div className={dashboardStyles.kpiGrid}>
-        <KpiCard title="Total Invoices" value={kpis.totalInvoices}
-        hint="Active invoices" iconType="document"
-         />
+        <KpiCard
+          title="Total Invoices"
+          value={kpis.totalInvoices}
+          hint="Active invoices"
+          iconType="document"
+          trend={8.5}
+        />
+
+        <KpiCard
+          title="Total Paid"
+          value={currencyFmt(kpis.totalPaid, "INR")}
+          hint="Received amount (INR)"
+          iconType="revenue"
+          trend={12.2}
+        />
+
+        <KpiCard
+          title="Total Unpaid"
+          value={currencyFmt(kpis.totalUnpaid, "INR")}
+          hint="Outstanding balance (INR)"
+          iconType="clock"
+          trend={-3.1}
+        />
 
       </div>
-
     </div>
-  )
+  );
 };
 
 export default Dashboard;
