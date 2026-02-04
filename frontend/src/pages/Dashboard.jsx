@@ -2,6 +2,7 @@ import React, { useCallback, useState, useEffect, useMemo } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useAuth } from "@clerk/clerk-react";
 import { dashboardStyles } from '../assets/dummyStyles.js';
+import KpiCard from '../components/KpiCard.jsx';
 
 //backend connection
 const API_BASE = 'http://localhost:4000';
@@ -377,6 +378,9 @@ const Dashboard = () => {
       ) : null}
 
       <div className={dashboardStyles.kpiGrid}>
+        <KpiCard title="Total Invoices" value={kpis.totalInvoices}
+        hint="Active invoices" iconType="document"
+         />
 
       </div>
 

@@ -30,6 +30,7 @@ const InvoiceSchema = new mongoose.Schema({
     type: String,
     required: true,
     index: true,
+    timestamps: true,
   },
 
   //it is clerk id

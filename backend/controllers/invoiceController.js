@@ -238,7 +238,10 @@ export async function getInvoices(req, res) {
       ];
     }
 
-    const invoices = (await Invoice.find(q)).sort({ createdAt: -1 }).len();
+    const invoices = await Invoice
+      .find(q)
+      .sort({ createdAt: -1 });
+
     return res.status(200).json({
       success: true,
       data: invoices,
