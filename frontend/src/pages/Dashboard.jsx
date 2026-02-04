@@ -1,7 +1,7 @@
-import React, { useCallback, useState, useEffect, useMemo } from 'react'
-import { useNavigate } from 'react-router-dom'
+import React, { useCallback, useState, useEffect, useMemo } from 'react';
+import { useNavigate } from 'react-router-dom';
 import { useAuth } from "@clerk/clerk-react";
-import { dashboardStyles } from '../assets/dummyStyles.js'
+import { dashboardStyles } from '../assets/dummyStyles.js';
 
 //backend connection
 const API_BASE = 'http://localhost:4000';
@@ -135,7 +135,7 @@ function formatDate(dateInput) {
 
 const Dashboard = () => {
   const navigate = useNavigate();
-  const { getToken, isSignedIn } = useAuth();
+  const { getToken, isSignedIn, } = useAuth();
   //to obtain the token from local storage
   const obtainToken = useCallback( async () => {
       if(typeof getToken !== "function") return null;
@@ -341,7 +341,7 @@ const Dashboard = () => {
     return clientName ? clientName.charAt(0).toUpperCase() : "C";
   };
 
-  //navigate us to invoice preview will do it tommorow
+  //navigate us to invoice preview
   
   function openInvoice(invRow) {
     const payload = invRow;
@@ -349,7 +349,38 @@ const Dashboard = () => {
   }
 
   return (
-    <div>Dashboard</div>
+    <div className={dashboardStyles.pageContainer}>
+      <div className={dashboardStyles.headerContainer}>
+        <h1 className={dashboardStyles.headerTitle}>Dashboard Overview </h1>
+        <p className={dashboardStyles.headerSubtitle}>
+          Track your invoicing performance and business insights.
+        </p>
+      </div>
+
+      {/* Loading error state */}
+      {loading ? (
+        <div className="p-6">Loading invoices...</div>
+      ) : error ? (
+        <div className="p-6">
+          <div className="text-red-600 mb-3">Error: {error}</div>
+          <div className="flex gap-2">
+            <button onClick={fetchInvoices} className="py-1 px-3 bg-blue-600 text-white rounded">
+              Retry
+            </button>
+            {String(error).toLowerCase().includes("unauthorized") && (
+              <button onClick={() => navigate("/login")} className="py-1 px-3 bg-green-600 text-white rounded">
+                Sign In
+                </button>
+            )}
+          </div>
+        </div>
+      ) : null}
+
+      <div className={dashboardStyles.kpiGrid}>
+
+      </div>
+
+    </div>
   )
 };
 
