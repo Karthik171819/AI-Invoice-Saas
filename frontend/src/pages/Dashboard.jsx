@@ -446,7 +446,7 @@ const Dashboard = () => {
           </div>
 
           {/*Quick Stats  */}
-           <div className={dashboardStyles.cardContainer}>
+          <div className={dashboardStyles.cardContainer}>
             <div className="p-6">
               <h3 className="font-semibold text-gray-900 mb-4">
                 Quick Actions
@@ -519,27 +519,82 @@ const Dashboard = () => {
           <div className={dashboardStyles.cardContainerOverflow}>
             <div className={dashboardStyles.tableHeader}>
               <div className={dashboardStyles.tableHeaderContent}>
-                <h3 className={dashboardStyles.tableTitle}>
-                  Recent Invoices
-                </h3>
+                <h3 className={dashboardStyles.tableTitle}>Recent Invoices</h3>
                 <p className={dashboardStyles.tableSubtitle}>
                   Latest 5 invoices from your account
                 </p>
               </div>
-              <button onClick={() => navigate("/app/invoices")}
-                className={dashboardStyles.tableActionButton}>
+              <button
+                onClick={() => navigate("/app/invoices")}
+                className={dashboardStyles.tableActionButton}
+              >
                 View All
-                  <svg
-                    className="w-4 h-4"
-                    viewBox="0 0 24 24"
-                    fill="none"
-                    stroke="currentColor"
-                    strokeWidth="2"
-                  >
-                    <path d="M5 12h14m-7-7l7 7-7 7" />
-                  </svg>
+                <svg
+                  className="w-4 h-4"
+                  viewBox="0 0 24 24"
+                  fill="none"
+                  stroke="currentColor"
+                  strokeWidth="2"
+                >
+                  <path d="M5 12h14m-7-7l7 7-7 7" />
+                </svg>
               </button>
             </div>
+          </div>
+
+          <div className={dashboardStyles.tableContainer}>
+            <table className={dashboardStyles.table}>
+              <thead>
+                <tr className={dashboardStyles.tableHead}>
+                  <th className={dashboardStyles.tableHeaderCell}>
+                    Client & ID
+                  </th>
+
+                  <th className={dashboardStyles.tableHeaderCell}>Amount</th>
+
+                  <th className={dashboardStyles.tableHeaderCell}>Status</th>
+
+                  <th className={dashboardStyles.tableHeaderCell}>Due Date</th>
+
+                  <th className={dashboardStyles.tableHeaderCell}>Actions</th>
+                </tr>
+              </thead>
+              <tbody className={dashboardStyles.tableBody}>
+                {recent.map((inv) => {
+                  const clientName = getClientName(inv);
+                  const clientInitial = getClientInitial(inv);  
+                  return (
+                    <tr
+                     key={inv.id}
+                     className={dashboardStyles.tableRow}
+                     onClick={() => openInvoice(inv)}>
+                      <td className={dashboardStyles.tableCell}>
+                        <div className="flex items-center gap-3">
+                          <div className={dashboardStyles.clientAvatar}>
+                            {clientInitial}
+                          </div>
+                          <div className={dashboardStyles.clientInfo}>
+                            {clientName}
+                          </div>
+                          <div className={dashboardStyles.clientSubInfo}>
+                            {inv.id}
+                          </div>
+                        </div>
+                      </td>
+
+                      <td className={dashboardStyles.tableCell}>
+                        <div className={dashboardStyles.amountCell}>
+                          {currencyFmt(inv.amount, inv.currency)}
+                        </div>
+                      </td>
+                      <td className={dashboardStyles.tableCell}>
+
+                      </td>
+                    </tr>
+                  );
+                })}
+              </tbody>
+            </table>
           </div>
         </div>
       </div>
