@@ -605,13 +605,31 @@ const Dashboard = () => {
                             e.stopPropagation();
                             openInvoice(inv);
                           }} className={dashboardStyles.actionButton}>
+                            <EyeIcon className="w-4 h-4 group-hover/btn:scale-110 transition-transform "/>
+                            View
                           </button>
                         </div>
-
                       </td>
                     </tr>
                   );
                 })}
+                {/* if no invoice */}
+                {recent.lenght === 0 && !loading && (
+                  <tr>
+                    <td colspan="5" className={dashboardStyles.emptyState}>
+                      <div className={dashboardStyles.emptyStateText}>
+                        <FileTextIcon className={dashboardStyles.emptyStateIcon}/>
+                        <div className={dashboardStyles.emptyStateMessage}>
+                          No invoice found yet
+                        </div>
+                        <button onClick={() => navigate("/app/creat-invoice")}
+                          className={dashboardStyles.emptyStateAction}>
+                          Create Your First Invoice
+                        </button>
+                      </div>
+                    </td>
+                  </tr>
+                )}
               </tbody>
             </table>
           </div>
