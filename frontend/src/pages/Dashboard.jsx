@@ -434,8 +434,18 @@ const Dashboard = () => {
                   )}
                 </span>
               </div>
+              <div className={dashboardStyles.quickStatsRow}>
+                <span className={dashboardStyles.quickStatsLabel}>
+                  Collection Eff.
+                </span>
+                <span className={dashboardStyles.quickStatsValue}>
+                  {kpis.paidPercentage.toFixed(1)}%
+                </span>
+              </div>
             </div>
           </div>
+
+          {/*  */}
         </div>
       </div>
     </div>
