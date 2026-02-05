@@ -96,7 +96,7 @@ const KpiCard = ({
       <div className={kpiCardStyles.content}>
         <div className={kpiCardStyles.headerContainer}>
           <div className={kpiCardStyles.mainContent}>
-            <div className={kpiCardStyles.iconTrendConatiner}>
+            <div className={kpiCardStyles.iconTrendContainer}>
               <div
                 className={`${kpiCardStyles.iconContainer} ${getIconColor(
                   iconType,

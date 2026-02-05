@@ -406,7 +406,7 @@ const Dashboard = () => {
         />
       </div>
       <div className={dashboardStyles.mainGrid}>
-        <div className={dashboardStyles.sidebarcolumn}>
+        <div className={dashboardStyles.sidebarColumn}>
           <div className={dashboardStyles.quickStatsCard}>
             <h3 className={dashboardStyles.quickStatsTitle}>Quick Stats</h3>
             <div className=" space-y-3">
@@ -445,7 +445,75 @@ const Dashboard = () => {
             </div>
           </div>
 
-          {/*  */}
+          {/*Quick Stats  */}
+           <div className={dashboardStyles.cardContainer}>
+            <div className="p-6">
+              <h3 className="font-semibold text-gray-900 mb-4">
+                Quick Actions
+              </h3>
+              <div className={dashboardStyles.quickActionsContainer}>
+                <button
+                  onClick={() => navigate("/app/create-invoice")}
+                  className={`${dashboardStyles.quickActionButton} ${dashboardStyles.quickActionBlue}`}
+                >
+                  <div
+                    className={`${dashboardStyles.quickActionIconContainer} ${dashboardStyles.quickActionIconBlue}`}
+                  >
+                    <svg
+                      className="w-4 h-4"
+                      viewBox="0 0 24 24"
+                      fill="none"
+                      stroke="currentColor"
+                      strokeWidth="2"
+                    >
+                      <path d="M12 5v14m-7-7h14" />
+                    </svg>
+                  </div>
+                  <span className={dashboardStyles.quickActionText}>
+                    Create Invoice
+                  </span>
+                </button>
+
+                <button
+                  onClick={() => navigate("/app/invoices")}
+                  className={`${dashboardStyles.quickActionButton} ${dashboardStyles.quickActionGray}`}
+                >
+                  <div
+                    className={`${dashboardStyles.quickActionIconContainer} ${dashboardStyles.quickActionIconGray}`}
+                  >
+                    <FileTextIcon className="w-4 h-4" />
+                  </div>
+                  <span className={dashboardStyles.quickActionText}>
+                    View All Invoices
+                  </span>
+                </button>
+
+                <button
+                  onClick={() => navigate("/app/business")}
+                  className={`${dashboardStyles.quickActionButton} ${dashboardStyles.quickActionGray}`}
+                >
+                  <div
+                    className={`${dashboardStyles.quickActionIconContainer} ${dashboardStyles.quickActionIconGray}`}
+                  >
+                    <svg
+                      className="w-4 h-4"
+                      viewBox="0 0 24 24"
+                      fill="none"
+                      stroke="currentColor"
+                      strokeWidth="2"
+                    >
+                      <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2" />
+                      <circle cx="12" cy="7" r="4" />
+                    </svg>
+                  </div>
+                  <span className={dashboardStyles.quickActionText}>
+                    Business Profile
+                  </span>
+                </button>
+              </div>
+            </div>
+          </div>
+
         </div>
       </div>
     </div>
