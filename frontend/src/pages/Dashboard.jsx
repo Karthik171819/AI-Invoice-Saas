@@ -588,6 +588,25 @@ const Dashboard = () => {
                         </div>
                       </td>
                       <td className={dashboardStyles.tableCell}>
+                        <StatusBadge
+                         status={inv.status}
+                         size="default"
+                         showIcon={true}/>
+                      </td>
+                      <td className={dashboardStyles.tableCell}>
+                        <div className={dashboardStyles.dateCell}>
+                          {inv.dueDate ? formatDate(inv.dueDate) : "—"}
+                        </div>
+                      </td>
+
+                      <td className={dashboardStyles.tableCell}>
+                        <div className="text-right">
+                          <button onClick={(e) => {
+                            e.stopPropagation();
+                            openInvoice(inv);
+                          }} className={dashboardStyles.actionButton}>
+                          </button>
+                        </div>
 
                       </td>
                     </tr>
