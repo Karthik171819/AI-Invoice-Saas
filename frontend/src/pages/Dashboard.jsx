@@ -3,6 +3,7 @@ import { useNavigate } from "react-router-dom";
 import { useAuth } from "@clerk/clerk-react";
 import { dashboardStyles } from "../assets/dummyStyles.js";
 import KpiCard from "../components/KpiCard.jsx";
+import StatusBadge from "../components/StatusBadge.jsx";
 
 //backend connection
 const API_BASE = "http://localhost:4000";
@@ -539,7 +540,7 @@ const Dashboard = () => {
                   <path d="M5 12h14m-7-7l7 7-7 7" />
                 </svg>
               </button>
-            </div>
+            {/* </div> */}
           </div>
 
           <div className={dashboardStyles.tableContainer}>
@@ -562,12 +563,13 @@ const Dashboard = () => {
               <tbody className={dashboardStyles.tableBody}>
                 {recent.map((inv) => {
                   const clientName = getClientName(inv);
-                  const clientInitial = getClientInitial(inv);  
+                  const clientInitial = getClientInitial(inv);
                   return (
                     <tr
-                     key={inv.id}
-                     className={dashboardStyles.tableRow}
-                     onClick={() => openInvoice(inv)}>
+                      key={inv.id}
+                      className={dashboardStyles.tableRow}
+                      onClick={() => openInvoice(inv)}
+                    >
                       <td className={dashboardStyles.tableCell}>
                         <div className="flex items-center gap-3">
                           <div className={dashboardStyles.clientAvatar}>
@@ -589,9 +591,10 @@ const Dashboard = () => {
                       </td>
                       <td className={dashboardStyles.tableCell}>
                         <StatusBadge
-                         status={inv.status}
-                         size="default"
-                         showIcon={true}/>
+                          status={inv.status}
+                          size="default"
+                          showIcon={true}
+                        />
                       </td>
                       <td className={dashboardStyles.tableCell}>
                         <div className={dashboardStyles.dateCell}>
@@ -601,11 +604,14 @@ const Dashboard = () => {
 
                       <td className={dashboardStyles.tableCell}>
                         <div className="text-right">
-                          <button onClick={(e) => {
-                            e.stopPropagation();
-                            openInvoice(inv);
-                          }} className={dashboardStyles.actionButton}>
-                            <EyeIcon className="w-4 h-4 group-hover/btn:scale-110 transition-transform "/>
+                          <button
+                            onClick={(e) => {
+                              e.stopPropagation();
+                              openInvoice(inv);
+                            }}
+                            className={dashboardStyles.actionButton}
+                          >
+                            <EyeIcon className="w-4 h-4 group-hover/btn:scale-110 transition-transform " />
                             View
                           </button>
                         </div>
@@ -614,16 +620,20 @@ const Dashboard = () => {
                   );
                 })}
                 {/* if no invoice */}
-                {recent.lenght === 0 && !loading && (
+                {recent.length === 0 && !loading && (
                   <tr>
-                    <td colspan="5" className={dashboardStyles.emptyState}>
+                    <td colSpan="5" className={dashboardStyles.emptyState}>
                       <div className={dashboardStyles.emptyStateText}>
-                        <FileTextIcon className={dashboardStyles.emptyStateIcon}/>
+                        <FileTextIcon
+                          className={dashboardStyles.emptyStateIcon}
+                        />
                         <div className={dashboardStyles.emptyStateMessage}>
                           No invoice found yet
                         </div>
-                        <button onClick={() => navigate("/app/creat-invoice")}
-                          className={dashboardStyles.emptyStateAction}>
+                        <button
+                          onClick={() => navigate("/app/create-invoice")}
+                          className={dashboardStyles.emptyStateAction}
+                        >
                           Create Your First Invoice
                         </button>
                       </div>
@@ -632,6 +642,7 @@ const Dashboard = () => {
                 )}
               </tbody>
             </table>
+            </div>
           </div>
         </div>
       </div>
