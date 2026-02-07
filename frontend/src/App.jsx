@@ -30,6 +30,7 @@ const App = () => {
         >
           <Route index element={<Dashboard />} />
           <Route path="dashboard" element={<Dashboard />} />
+          <Route path="create-invoice" element={<CreateInvoice />} />
         </Route>
       </Routes>
     </div>
