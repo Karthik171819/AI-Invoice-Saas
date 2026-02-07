@@ -132,5 +132,17 @@ const StatusBadge = ({ status = "", size = "deafault", showIcon = true }) => {
 };
 
 // status with count
+export function StatusWithCount({ status, count, size = "default" }) {
+  return (
+    <div className="inline-flex items-center gap-2 group">
+      <StatusBadge status={status} size={size} />
+      {count !== undefined && (
+        <span className="text-xs text-gray-500 font-medium bg-gray-100 px-2 py-1 rounded-full group-hover:bg-gray-200 transition-colors duration-200">
+          {count}
+        </span>
+      )}
+    </div>
+  );
+}
 
 export default StatusBadge;
