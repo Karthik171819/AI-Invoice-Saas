@@ -4,6 +4,7 @@ import Home from "./pages/Home.jsx";
 import { RedirectToSignIn, SignedIn, SignedOut } from "@clerk/clerk-react";
 import AppShell from "./components/AppShell.jsx";
 import Dashboard from "./pages/Dashboard.jsx";
+import CreateInvoice from "./pages/CreateInvoice.jsx";
 
 const ClerkProtected = ({ children }) => (
   <>
