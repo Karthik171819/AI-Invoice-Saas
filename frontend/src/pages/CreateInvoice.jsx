@@ -40,7 +40,7 @@ function resolveImageUrl(url) {
 
   // relative paths like "/uploads/..." or "uploads/..." -> prefix with API_BASE
   return `${API_BASE.replace(/\/+$/, "")}/${s.replace(/^\/+/, "")}`;
-}
+} // it will render the image coming from the server side
 
 function readJSON(key, fallback = null) {
   try {
