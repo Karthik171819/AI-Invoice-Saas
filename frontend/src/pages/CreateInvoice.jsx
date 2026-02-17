@@ -49,7 +49,7 @@ function readJSON(key, fallback = null) {
     return JSON.parse(raw);
   } catch {
     return fallback;
-  }// this function generate an unique id
+  }// this function generate an unique id "will do"
 }
 
 //this function give the amount either in inr or usd
