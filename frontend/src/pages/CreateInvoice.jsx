@@ -296,6 +296,7 @@ export default function CreateInvoice() {
     };
     reader.readAsDataURL(file);
   }
+  //you can handle the image here and review it, also you can remove the image if you want to change it
   function removeImage(kind = "logo") {
     setInvoice((inv) =>
       inv
@@ -321,6 +322,7 @@ export default function CreateInvoice() {
         const headers = { Accept: "application/json" };
         if (token) headers["Authorization"] = `Bearer ${token}`;
 
+        //here api/invoice number is coming from server.js
         const res = await fetch(
           `${API_BASE}/api/invoice?invoiceNumber=${encodeURIComponent(
             candidate
@@ -666,7 +668,7 @@ export default function CreateInvoice() {
         signatureTitle: invoice.signatureTitle || "",
         notes: invoice.notes || "",
         localId: invoice.id,
-      };
+      }; //these fields are filled by user and stored in database
 
       // include invoiceNumber only if provided (we prefill for new invoices)
       if (
@@ -678,8 +680,8 @@ export default function CreateInvoice() {
 
       const endpoint =
         isEditing && invoice.id
-          ? `${API_BASE}/api/invoice/${invoice.id}`
-          : `${API_BASE}/api/invoice`;
+          ? `${API_BASE}/api/invoice/${invoice.id}` //its a PUT method route to update the invoice
+          : `${API_BASE}/api/invoice`; //its a POST method route to create a new invoice in MongoDB
       const method = isEditing && invoice.id ? "PUT" : "POST";
 
       // try to obtain Clerk token; if present include Authorization
@@ -795,6 +797,7 @@ export default function CreateInvoice() {
     }
   }
 
+  //its a redirect to the preview page and pass the invoice
   function handlePreview() {
     const prepared = {
       ...invoice,
@@ -810,7 +813,8 @@ export default function CreateInvoice() {
 
   const totals = computeTotals(items, invoice?.taxPercent ?? 18);
 
-  /* ---------- JSX (kept structure, invoiceNumber input prefills generated value) ---------- */
+
+  /* ---------- JSX (kept structure, invoiceNumber input prefills generated value)  its a UI Part---------- */
   return (
     <div className={createInvoiceStyles.pageContainer}>
       {/* Header Section */}
