@@ -49,7 +49,7 @@ function readJSON(key, fallback = null) {
     return JSON.parse(raw);
   } catch {
     return fallback;
-  }// this function generate an unique id "will do"
+  }// this function generate an unique id 
 }
 
 //this function give the amount either in inr or usd
@@ -171,7 +171,7 @@ const AddIcon = ({ className = "w-4 h-4" }) => (
 /* ---------- Component (Create / Edit Invoice) ---------- */
 export default function CreateInvoice() {
   const navigate = useNavigate();
-  const { id } = useParams(); // if editing, id will be present
+  const { id } = useParams(); // if editing, id will be present in invoice controller using id
   const loc = useLocation();
   const invoiceFromState =
     loc.state && loc.state.invoice ? loc.state.invoice : null;
@@ -242,6 +242,7 @@ export default function CreateInvoice() {
     );
   }
 
+  //update the item qty and description using index
   function updateItem(idx, key, value) {
     setItems((arr) => {
       const copy = arr.slice();
