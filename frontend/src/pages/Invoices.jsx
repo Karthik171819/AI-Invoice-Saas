@@ -1,6 +1,6 @@
 import React, { useMemo, useState, useEffect, useCallback } from "react";
 import StatusBadge from "../components/StatusBadge";
-import AiInvoiceModal from "../components/AiInvoiceModal";
+import AiInvoiceModel from "../components/AiInvoiceModel";
 import GeminiIcon from "../components/GeminiIcon";
 import { useNavigate } from "react-router-dom";
 import { invoicesStyles } from "../assets/dummyStyles";
@@ -1048,7 +1048,7 @@ export default function InvoicesPage() {
       </div>
 
       {/* AI modal */}
-      <AiInvoiceModal
+      <AiInvoiceModel
         open={aiOpen}
         onClose={() => setAiOpen(false)}
         onGenerate={handleGenerateFromAI}
