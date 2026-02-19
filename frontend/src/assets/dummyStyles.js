@@ -1,5 +1,5 @@
 // src/assets/dummyStyles.js
-export const aiInvoiceModalStyles = {
+export const aiInvoiceModelStyles = {
   overlay: "fixed inset-0 z-50 flex items-center justify-center p-4",
   backdrop: "absolute inset-0 bg-black opacity-30",
   modal: "relative max-w-3xl w-full bg-white rounded-2xl shadow-lg p-6 z-10",
