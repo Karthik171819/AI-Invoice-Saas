@@ -74,13 +74,14 @@ const AiInvoiceModel = ({ open, onClose, onGenerate, initialText = "" }) => {
             Paste Invoice Text
           </label>
           <textarea vlaue={text} onChange={(e) => setText(e.target.value)}>
-            placeholder={"e.g. Client: John Doe, Item: Widget, Qty: 2, Price: $10 each"}
+            placeholder=
+            {"e.g. Client: John Doe, Item: Widget, Qty: 2, Price: $10 each"}
             rows={8}
             className={aiInvoiceModelStyles.textarea}
           </textarea>
         </div>
         {error && (
-            <div className={aiInvoiceModelStyles.error} role="alert">
+          <div className={aiInvoiceModelStyles.error} role="alert">
             {String(error)
               .split("\n")
               .map((line, i) => (
@@ -95,6 +96,14 @@ const AiInvoiceModel = ({ open, onClose, onGenerate, initialText = "" }) => {
               null}
           </div>
         )}
+        <div className={aiInvoiceModelStyles.actions}>
+          <AnimatedButton
+            onClick={handleGenerateClick}
+            isLoading={loading}
+            disabled={loading}
+            label="Generate"
+          />
+        </div>
       </div>
     </div>
   );
