@@ -7,6 +7,7 @@ const API_BASE = "http://localhost:4000";
 const PROFILE_ENDPOINT = `${API_BASE}/api/businessProfile/me`;
 const INVOICE_ENDPOINT = (id) => `${API_BASE}/api/invoice/${id}`;
 
+//images from the uploads backend
 function resolveImageUrl(url) {
   if (!url) return null;
   const s = String(url).trim();
@@ -69,6 +70,7 @@ function getStoredInvoices() {
   return readJSON("invoices_v1", []) || [];
 }
 
+//default profile for invoice
 const defaultProfile = {
   businessName: "",
   email: "",
@@ -83,6 +85,7 @@ const defaultProfile = {
   signatureTitle: "",
 };
 
+//Currency Format
 function currencyFmt(amount = 0, currency = "INR") {
   try {
     if (currency === "INR") {
@@ -104,6 +107,7 @@ function currencyFmt(amount = 0, currency = "INR") {
   }
 }
 
+//Date Format
 function formatDate(dateInput) {
   if (!dateInput) return "—";
   const d = dateInput instanceof Date ? dateInput : new Date(String(dateInput));
@@ -114,6 +118,7 @@ function formatDate(dateInput) {
   return `${dd}/${mm}/${yyyy}`;
 }
 
+//taking client details
 function normalizeClient(raw) {
   if (!raw) return { name: "", email: "", address: "", phone: "" };
   if (typeof raw === "string")
@@ -192,6 +197,7 @@ export default function InvoicePreview() {
 
   const prevTitleRef = useRef(document.title);
 
+  //obtain token from local storage
   const obtainToken = useCallback(async () => {
     if (typeof getToken !== "function") return null;
     try {
@@ -344,6 +350,7 @@ export default function InvoicePreview() {
   }, [invoice]);
 
 
+  //Preview part of invoice and print
   const handlePrint = useCallback(() => {
     const invoiceNumber =
       (invoice && (invoice.invoiceNumber || invoice.id)) ||
