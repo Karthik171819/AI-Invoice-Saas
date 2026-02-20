@@ -466,11 +466,111 @@ const BusinessProfile = () => {
 
         {/* BRANDING AND DEFAULTS */}
         <div className={businessProfileStyles.cardContainer}>
-            <div className={businessProfileStyles.cardHeaderContainer}>
-                <div className={`${businessProfileStyles.cardIconContainer} ${iconColors.branding}`}>
-                    <ImageIcon className="w-5 h-5" />
-                </div>
+          <div className={businessProfileStyles.cardHeaderContainer}>
+            <div
+              className={`${businessProfileStyles.cardIconContainer} ${iconColors.branding}`}
+            >
+              <ImageIcon className="w-5 h-5" />
             </div>
+            <h2 className={businessProfileStyles.cardTitle}>
+              Branding & defaults
+            </h2>
+          </div>
+
+          {/* logo */}
+          <div className={businessProfileStyles.gridCols2Lg}>
+            {/* Logo Upload */}
+            <div className="space-y-6">
+              <div>
+                <h3 className="text-lg font-medium text-gray-900 mb-4">
+                  Company Logo
+                </h3>
+
+                <div className={businessProfileStyles.uploadArea}>
+                  {previews.logo ? (
+                    <div
+                      className={businessProfileStyles.imagePreviewContainer}
+                    >
+                      <div className={businessProfileStyles.logoPreview}>
+                        <img
+                          src={previews.logo}
+                          alt="logo preview"
+                          className="object-contain w-full h-full"
+                          onError={(e) => {
+                            e.currentTarget.style.display = "none";
+                            console.warn(
+                              "[BusinessProfile] logo preview failed to load:",
+                              previews.logo,
+                            );
+                          }}
+                        />
+                      </div>
+                      <div className={businessProfileStyles.buttonGroup}>
+                        <label className={businessProfileStyles.changeButton}>
+                          <UploadIcon className="w-4 h-4" />
+                          Change
+                          <input
+                            type="file"
+                            accept="image/*"
+                            onChange={(e) =>
+                              handleLocalFilePick("logo", e.target.files?.[0])
+                            }
+                            className="hidden"
+                          />
+                        </label>
+                        <button
+                          type="button"
+                          onClick={() => removeLocalFile("logo")}
+                          className={businessProfileStyles.removeButton}
+                        >
+                          <DeleteIcon className="w-4 h-4" /> Remove
+                        </button>
+                      </div>
+                    </div>
+                  ) : (
+                    <label className="cursor-pointer block">
+                      <div
+                        className={`${businessProfileStyles.imagePreviewContainer} ${businessProfileStyles.hoverScale}`}
+                      >
+                        <div
+                          className={businessProfileStyles.uploadIconContainer}
+                        >
+                          <UploadIcon className="w-6 h-6" />
+                        </div>
+                        <div>
+                          <p className={businessProfileStyles.uploadTextTitle}>
+                            Upload Logo
+                          </p>
+                          <p
+                            className={businessProfileStyles.uploadTextSubtitle}
+                          >
+                            PNG, JPG up to 5MB
+                          </p>
+                        </div>
+                        <input
+                          type="file"
+                          accept="image/*"
+                          onChange={(e) =>
+                            handleLocalFilePick("logo", e.target.files?.[0])
+                          }
+                          className="hidden"
+                        />
+                      </div>
+                    </label>
+                  )}
+                </div>
+              </div>
+            </div>
+
+            {/* tax setting */}
+            <div className="space-y-6">
+              <div>
+              <h3 className="text-lg font-medium text-gray-900 mb-4">
+                  Tax Settings
+              </h3>
+              </div>
+            </div>
+          </div>
         </div>
       </form>
     </div>
