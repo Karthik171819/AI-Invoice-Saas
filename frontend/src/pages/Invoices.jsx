@@ -231,15 +231,6 @@ function Pagination({ page, totalPages, onChange }) {
   );
 }
 
-/* uid helper */
-function uid() {
-  try {
-    if (typeof crypto !== "undefined" && crypto.randomUUID)
-      return crypto.randomUUID();
-  } catch {}
-  return Math.random().toString(36).slice(2, 9);
-}
-
 /* ---------- Component ---------- */
 export default function InvoicesPage() {
   const navigate = useNavigate();
@@ -274,7 +265,7 @@ export default function InvoicesPage() {
   const [sortBy, setSortBy] = useState({ key: "issueDate", dir: "desc" });
   const [page, setPage] = useState(1);
 
-  // AI modal
+  // AI model
   const [aiOpen, setAiOpen] = useState(false);
   const [aiLoading, setAiLoading] = useState(false);
 

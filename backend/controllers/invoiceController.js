@@ -9,7 +9,7 @@ function computeTotals(items = [], taxPercent = 0) {
   const safe = Array.isArray(items) ? items.filter(Boolean) : [];
   const subtotal = safe.reduce(
     (s, it) => s + Number(it.qty || 0) * Number(it.unitPrice || 0),
-    0
+    0,
   );
   const tax = (subtotal * Number(taxPercent || 0)) / 100;
   const total = subtotal + tax;
@@ -89,7 +89,7 @@ export async function createInvoice(req, res) {
       ? body.items
       : parseItemsField(body.items);
     const taxPercent = Number(
-      body.taxPercent ?? body.tax ?? body.defaultTaxPercent ?? 0
+      body.taxPercent ?? body.tax ?? body.defaultTaxPercent ?? 0,
     );
     const totals = computeTotals(items, taxPercent);
     const fileUrls = uploadedFilesToUrls(req);
@@ -238,9 +238,7 @@ export async function getInvoices(req, res) {
       ];
     }
 
-    const invoices = await Invoice
-      .find(q)
-      .sort({ createdAt: -1 });
+    const invoices = await Invoice.find(q).sort({ createdAt: -1 });
 
     return res.status(200).json({
       success: true,
@@ -308,9 +306,9 @@ export async function updateInvoice(req, res) {
       });
     }
     const { id } = req.params;
-    const body = eq.body || {};
+    const body = req.body || {};
 
-    const query = isObjectIdstring(id)
+    const query = isObjectIdString(id)
       ? { _id: id, owner: userId }
       : { invoiceNumber: id, owner: userId };
     const existing = await Invoice.findOne(query);
@@ -352,7 +350,7 @@ export async function updateInvoice(req, res) {
         body.tax ??
         body.defaultTaxPercent ??
         existing.taxPercent ??
-        0
+        0,
     );
     const totals = computeTotals(items, taxPercent);
     const fileUrls = uploadedFilesToUrls(req);
@@ -392,28 +390,37 @@ export async function updateInvoice(req, res) {
       notes: body.notes,
     };
 
-    Object.keys(update).forEach((key) =>  update[k] == undefined && delete update[k]);
+    // Object.keys(update).forEach((key) =>  update[k] == undefined && delete update[k]);
+    Object.keys(update).forEach((key) => {
+      if (update[key] === undefined) {
+        delete update[key];
+      }
+    });
 
     const updated_ = await Invoice.findOneAndUpdate(
-      { _id: existing._id},
+      { _id: existing._id },
       { $set: update },
-      { new: true , runValidators: true }
+      { new: true, runValidators: true },
     );
 
-    if (!update) return res.status(500).json({
-      success: false,
-      message: "Failed to update invoice",
-    });
+    if (!updated_)
+      return res.status(500).json({
+        success: false,
+        message: "Failed to update invoice",
+      });
     return res.status(200).json({
       success: true,
       message: "Invoice updated",
-      data: updated,
-    })
-
-  } 
-   catch (err) {
+      data: updated_,
+    });
+  } catch (err) {
     console.error("updateInvoice error:", err);
-    if (err && err.code === 11000 && err.keyPattern && err.keyPattern.invoiceNumber) {
+    if (
+      err &&
+      err.code === 11000 &&
+      err.keyPattern &&
+      err.keyPattern.invoiceNumber
+    ) {
       return res
         .status(409)
         .json({ success: false, message: "Invoice number already exists" });
@@ -423,9 +430,8 @@ export async function updateInvoice(req, res) {
 }
 
 // to delete an invoice
-export async function deleteInvoice(req, res){
-  try{
-
+export async function deleteInvoice(req, res) {
+  try {
     const { userId } = getAuth(req) || {};
     if (!userId) {
       return res.status(401).json({
@@ -436,34 +442,29 @@ export async function deleteInvoice(req, res){
 
     const { id } = req.params;
 
-    const query = isObjectIdString (id)
+    const query = isObjectIdString(id)
       ? { _id: id, owner: userId }
       : { invoiceNumber: id, owner: userId };
 
-      const found = await Invoice.findOne(query);
+    const found = await Invoice.findOne(query);
 
-      if (!found){
-        return res.status(404).json({
-          success: false,
-          message: "Invoice not found",
-        });
-      }
-
-      await Invoice.deleteOne({ _id: found._id});
-      return res.status(200).json({
-        success: true,
-        message: "Invoice deleted",
+    if (!found) {
+      return res.status(404).json({
+        success: false,
+        message: "Invoice not found",
       });
     }
 
-  
-
-  catch (err){
+    await Invoice.deleteOne({ _id: found._id });
+    return res.status(200).json({
+      success: true,
+      message: "Invoice deleted",
+    });
+  } catch (err) {
     console.error("deleteInvoice error:", err);
     return res.status(500).json({
       success: false,
       message: "Server error",
     });
-
   }
 }
