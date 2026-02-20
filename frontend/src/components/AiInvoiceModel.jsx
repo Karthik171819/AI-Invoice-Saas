@@ -69,6 +69,32 @@ const AiInvoiceModel = ({ open, onClose, onGenerate, initialText = "" }) => {
             ✕
           </button>
         </div>
+        <div className="mt-4">
+          <label className={aiInvoiceModelStyles.label}>
+            Paste Invoice Text
+          </label>
+          <textarea vlaue={text} onChange={(e) => setText(e.target.value)}>
+            placeholder={"e.g. Client: John Doe, Item: Widget, Qty: 2, Price: $10 each"}
+            rows={8}
+            className={aiInvoiceModelStyles.textarea}
+          </textarea>
+        </div>
+        {error && (
+            <div className={aiInvoiceModelStyles.error} role="alert">
+            {String(error)
+              .split("\n")
+              .map((line, i) => (
+                <div key={i}>{line}</div>
+              ))}
+            {(/quota|exhausted|resource_exhausted/i.test(String(error)) && (
+              <div style={{ marginTop: 8, fontSize: 13, color: "#374151" }}>
+                Tip: AI is temporarily unavailable (quota). Try again in a few
+                minutes, or create the invoice manually.
+              </div>
+            )) ||
+              null}
+          </div>
+        )}
       </div>
     </div>
   );
