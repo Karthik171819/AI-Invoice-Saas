@@ -1,4 +1,5 @@
 import React from "react";
+import { useState, useEffect } from "react";
 import {
   businessProfileStyles,
   iconColors,
@@ -228,7 +229,252 @@ const BusinessProfile = () => {
       objUrl,
     );
   }
-  return <div>BusinessProfile</div>;
+
+  //you can remove the preview invoice file by this function suppose you can remove it also
+  function removeLocalFile(kind) {
+    const prev = previews[kind];
+    if (prev && typeof prev === "string" && prev.startsWith("blob:")) {
+      URL.revokeObjectURL(prev);
+    }
+    setFiles((f) => ({ ...f, [kind]: null }));
+    setPreviews((p) => ({ ...p, [kind]: null }));
+    updateMeta(
+      kind === "logo"
+        ? "logoUrl"
+        : kind === "stamp"
+          ? "stampUrl"
+          : "signatureUrl",
+      null,
+    );
+  }
+
+  //to save the business profile in the database
+  async function handleSave(e) {
+    e?.preventDefault();
+    setSaving(true);
+
+    try {
+      const token = await getAuthToken();
+      if (!token) {
+        alert("You must be signed in to save your business profile.");
+        return;
+      }
+
+      const fd = new FormData();
+      fd.append("businessName", meta.businessName || "");
+      fd.append("email", meta.email || "");
+      fd.append("address", meta.address || "");
+      fd.append("phone", meta.phone || "");
+      fd.append("gst", meta.gst || "");
+      fd.append("defaultTaxPercent", String(meta.defaultTaxPercent ?? 18));
+      fd.append("signatureOwnerName", meta.signatureOwnerName || "");
+      fd.append("signatureOwnerTitle", meta.signatureOwnerTitle || "");
+      fd.append("notes", meta.notes || "");
+
+      // Respect original field names expected by server
+      if (files.logo) fd.append("logoName", files.logo);
+      else if (meta.logoUrl) fd.append("logoUrl", meta.logoUrl);
+
+      if (files.stamp) fd.append("stampName", files.stamp);
+      else if (meta.stampUrl) fd.append("stampUrl", meta.stampUrl);
+
+      if (files.signature) fd.append("signatureNameMeta", files.signature);
+      else if (meta.signatureUrl) fd.append("signatureUrl", meta.signatureUrl);
+
+      const profileId = meta.profileId;
+      const url = profileId
+        ? `${API_BASE}/api/businessProfile/${profileId}` //edit route
+        : `${API_BASE}/api/businessProfile`; //creation route
+      const method = profileId ? "PUT" : "POST";
+
+      const res = await fetch(url, {
+        method,
+        headers: { Authorization: `Bearer ${token}` },
+        body: fd,
+      });
+
+      const json = await res.json().catch(() => null);
+      if (!res.ok) {
+        const msg = json?.message || `Save failed (${res.status})`;
+        throw new Error(msg);
+      }
+
+      const saved = json?.data || json;
+      const merged = {
+        ...meta,
+        businessName: saved.businessName ?? meta.businessName,
+        email: saved.email ?? meta.email,
+        address: saved.address ?? meta.address,
+        phone: saved.phone ?? meta.phone,
+        gst: saved.gst ?? meta.gst,
+        logoUrl: saved.logoUrl ?? meta.logoUrl,
+        stampUrl: saved.stampUrl ?? meta.stampUrl,
+        signatureUrl: saved.signatureUrl ?? meta.signatureUrl,
+        signatureOwnerName: saved.signatureOwnerName ?? meta.signatureOwnerName,
+        signatureOwnerTitle:
+          saved.signatureOwnerTitle ?? meta.signatureOwnerTitle,
+        defaultTaxPercent: saved.defaultTaxPercent ?? meta.defaultTaxPercent,
+        notes: saved.notes ?? meta.notes,
+        profileId: saved._id ?? meta.profileId ?? saved.id ?? meta.profileId,
+      };
+
+      setMeta(merged);
+
+      if (saved.logoUrl)
+        setPreviews((p) => ({ ...p, logo: resolveImageUrl(saved.logoUrl) }));
+      if (saved.stampUrl)
+        setPreviews((p) => ({ ...p, stamp: resolveImageUrl(saved.stampUrl) }));
+      if (saved.signatureUrl)
+        setPreviews((p) => ({
+          ...p,
+          signature: resolveImageUrl(saved.signatureUrl),
+        }));
+
+      alert(`Profile ${profileId ? "updated" : "created"} successfully.`);
+    } catch (err) {
+      console.error("Failed to save profile:", err);
+      alert(err?.message || "Failed to save profile. See console for details.");
+    } finally {
+      setSaving(false);
+    }
+  }
+
+  //remove the preview and images of invoices that are stored in local storage
+  function handleClearProfile() {
+    if (
+      !confirm(
+        "Clear current profile data? This will remove local changes and previews.",
+      )
+    )
+      return;
+    // revoke any object URLs created locally
+    Object.values(previews).forEach((u) => {
+      if (u && typeof u === "string" && u.startsWith("blob:")) {
+        URL.revokeObjectURL(u);
+      }
+    });
+    setMeta({});
+    setFiles({ logo: null, stamp: null, signature: null });
+    setPreviews({ logo: null, stamp: null, signature: null });
+  }
+  return (
+    <div className={businessProfileStyles.pageContainer}>
+      <div className={businessProfileStyles.headerContainer}>
+        <h1 className={businessProfileStyles.headerTitle}>Business Profile</h1>
+        <p className={businessProfileStyles.headerSubtitle}>
+          Configure your company details, branding assets and invoice defaults
+        </p>
+
+        {!isSignedIn && (
+          <div
+            style={{
+              marginTop: 12,
+              color: "#92400e",
+              background: "#fff7ed",
+              padding: 10,
+              borderRadius: 8,
+            }}
+          >
+            You are not signed in. Please sign in to create or edit your
+            business profile.
+          </div>
+        )}
+      </div>
+
+      <form
+        onSubmit={handleSave}
+        className={businessProfileStyles.pageContainer}
+      >
+        {/* BUSINESS NAME */}
+        <div className={businessProfileStyles.cardContainer}>
+          <div className={businessProfileStyles.cardHeaderContainer}>
+            <div
+              className={`${businessProfileStyles.cardIconContainer} ${
+                iconColors.business
+              }`}
+            >
+              <svg
+                className="w-5 h-5"
+                viewBox="0 0 24 24"
+                fill="none"
+                stroke="currentColor"
+                strokeWidth="2"
+              >
+                <path d="M19 21V5a2 2 0 0 0-2-2H7a2 2 0 0 0-2 2v16m14 0h2m-2 0h-5m-9 0H3m2 0h5M9 7h1m-1 4h1m4-4h1m-1 4h1m-5 8v-4m0 4h4" />
+              </svg>
+            </div>
+            <h2 className={businessProfileStyles.cardTitle}>
+              Business Information
+            </h2>
+          </div>
+
+          <div className={businessProfileStyles.gridCols2}>
+            <div>
+              <label className={businessProfileStyles.label}>
+                Business Name
+              </label>
+              <input
+                className={businessProfileStyles.input}
+                value={meta.businessName || ""}
+                onChange={(e) => updateMeta("businessName", e.target.value)}
+                placeholder="Enter your business name"
+              />
+            </div>
+
+            <div>
+              <label className={businessProfileStyles.label}>Email</label>
+              <input
+                className={businessProfileStyles.input}
+                value={meta.email || ""}
+                onChange={(e) => updateMeta("email", e.target.value)}
+                placeholder="Enter your business email"
+              />
+            </div>
+
+            <div className={businessProfileStyles.gridColSpan2}>
+              <label className={businessProfileStyles.label}>Address</label>
+              <textarea
+                row={3}
+                className={businessProfileStyles.textarea}
+                value={meta.address || ""}
+                onChange={(e) => updateMeta("address", e.target.value)}
+                placeholder="Enter your business address"
+              ></textarea>
+            </div>
+
+            <div>
+              <label className={businessProfileStyles.label}>Phone</label>
+              <input
+                className={businessProfileStyles.input}
+                value={meta.phone || ""}
+                onChange={(e) => updateMeta("phone", e.target.value)}
+                placeholder="+91 (111) 123-4567"
+              />
+            </div>
+
+            <div>
+              <label className={businessProfileStyles.label}>GST NUmber</label>
+              <input
+                className={businessProfileStyles.input}
+                value={meta.gst || ""}
+                onChange={(e) => updateMeta("gst", e.target.value)}
+                placeholder="GST IN 27AAPLS1234A1Z5"
+              />
+            </div>
+          </div>
+        </div>
+
+        {/* BRANDING AND DEFAULTS */}
+        <div className={businessProfileStyles.cardContainer}>
+            <div className={businessProfileStyles.cardHeaderContainer}>
+                <div className={`${businessProfileStyles.cardIconContainer} ${iconColors.branding}`}>
+                    <ImageIcon className="w-5 h-5" />
+                </div>
+            </div>
+        </div>
+      </form>
+    </div>
+  );
 };
 
 export default BusinessProfile;
