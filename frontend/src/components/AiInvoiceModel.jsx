@@ -73,11 +73,12 @@ const AiInvoiceModel = ({ open, onClose, onGenerate, initialText = "" }) => {
           <label className={aiInvoiceModelStyles.label}>
             Paste Invoice Text
           </label>
-          <textarea vlaue={text} onChange={(e) => setText(e.target.value)}>
+          <textarea vlaue={text} onChange={(e) => setText(e.target.value)}
             placeholder=
-            {"e.g. Client: John Doe, Item: Widget, Qty: 2, Price: $10 each"}
+            {`e.g. Client: John Doe, Item: Widget, Qty: 2, Price: $10 each`}
             rows={8}
             className={aiInvoiceModelStyles.textarea}
+            >
           </textarea>
         </div>
         {error && (
