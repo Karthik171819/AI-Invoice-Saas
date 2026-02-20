@@ -58,7 +58,7 @@ export async function createBusinessProfile(req, res) {
       message: "Business profile created successfully",
     });
   } catch (err) {
-    console.log("Error creating business profile:", err);
+    console.error("Error creating business profile:", err);
     return res.status(500).json({
       success: false,
       message: "Internal server error",
@@ -129,7 +129,7 @@ export async function updateBusinessProfile(req, res) {
       message: "Business profile updated successfully",
     });
   } catch (err) {
-    console.log("Error updating business profile:", err);
+    console.error("Error updating business profile:", err);
     return res.status(500).json({
       success: false,
       message: "Internal server error",
@@ -160,7 +160,7 @@ export async function getMyBusinessProfile(req, res) {
   } 
   
   catch (err) {
-    console.log("Error fetching business profile:", err);
+    console.error("Error fetching business profile:", err);
     return res.status(500).json({
       success: false,
       message: "Internal server error",
