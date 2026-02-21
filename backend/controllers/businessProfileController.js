@@ -125,7 +125,7 @@ export async function updateBusinessProfile(req, res) {
 
     return res.status(200).json({
       success: true,
-      data: updated,
+      data: updated, //its data 
       message: "Business profile updated successfully",
     });
   } catch (err) {
