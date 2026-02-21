@@ -565,9 +565,30 @@ const BusinessProfile = () => {
             {/* tax setting */}
             <div className="space-y-6">
               <div>
-              <h3 className="text-lg font-medium text-gray-900 mb-4">
+                <h3 className="text-lg font-medium text-gray-900 mb-4">
                   Tax Settings
-              </h3>
+                </h3>
+                <div className={businessProfileStyles.taxContainer}>
+                  <label className={business.label}>
+                    Default Tax Percentage
+                  </label>
+                  <div className="flex items-center gap-3">
+                    <input
+                      type="number"
+                      min="0"
+                      max="100"
+                      step="0.1"
+                      className={businessProfileStyles.taxInput}
+                      value={meta.defaultTaxPercent ?? 18}
+                      onChange={(e) =>
+                        updateMeta(
+                          "defaultTaxPercent",
+                          Number(e.target.value || 0),
+                        )
+                      }
+                    />
+                  </div>
+                </div>
               </div>
             </div>
           </div>
