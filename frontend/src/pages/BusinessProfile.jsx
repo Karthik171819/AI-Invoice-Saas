@@ -569,7 +569,7 @@ const BusinessProfile = () => {
                   Tax Settings
                 </h3>
                 <div className={businessProfileStyles.taxContainer}>
-                  <label className={business.label}>
+                  <label className={businessProfileStyles.label}>
                     Default Tax Percentage
                   </label>
                   <div className="flex items-center gap-3">
@@ -587,12 +587,19 @@ const BusinessProfile = () => {
                         )
                       }
                     />
+                    <span className={customStyles.taxPercentage}>%</span>
                   </div>
+                  <p className={businessProfileStyles.taxHelpText}>
+                    This tax percentage will be applied to all new invoices by default.
+                    You can override it for individual invoices if needed.
+                  </p>
                 </div>
               </div>
             </div>
           </div>
         </div>
+
+        {/*  */}
       </form>
     </div>
   );
