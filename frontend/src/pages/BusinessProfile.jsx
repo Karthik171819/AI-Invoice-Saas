@@ -278,7 +278,7 @@ const BusinessProfile = () => {
       if (files.stamp) fd.append("stampName", files.stamp);
       else if (meta.stampUrl) fd.append("stampUrl", meta.stampUrl);
 
-      if (files.signature) fd.append("signatureNameMeta", files.signature);
+      if (files.signature) fd.append("signatureName", files.signature); //changed from signatureNameMeta to signatureName to match server expectation
       else if (meta.signatureUrl) fd.append("signatureUrl", meta.signatureUrl);
 
       const profileId = meta.profileId;
@@ -590,8 +590,9 @@ const BusinessProfile = () => {
                     <span className={customStyles.taxPercentage}>%</span>
                   </div>
                   <p className={businessProfileStyles.taxHelpText}>
-                    This tax percentage will be applied to all new invoices by default.
-                    You can override it for individual invoices if needed.
+                    This tax percentage will be applied to all new invoices by
+                    default. You can override it for individual invoices if
+                    needed.
                   </p>
                 </div>
               </div>
@@ -638,7 +639,7 @@ const BusinessProfile = () => {
                           e.currentTarget.style.display = "none";
                           console.warn(
                             "[BusinessProfile] stamp preview failed to load:",
-                            previews.stamp
+                            previews.stamp,
                           );
                         }}
                       />
@@ -715,7 +716,7 @@ const BusinessProfile = () => {
                           e.currentTarget.style.display = "none";
                           console.warn(
                             "[BusinessProfile] signature preview failed to load:",
-                            previews.signature
+                            previews.signature,
                           );
                         }}
                       />
@@ -729,7 +730,7 @@ const BusinessProfile = () => {
                           onChange={(e) =>
                             handleLocalFilePick(
                               "signature",
-                              e.target.files?.[0]
+                              e.target.files?.[0],
                             )
                           }
                           className="hidden"
@@ -814,6 +815,32 @@ const BusinessProfile = () => {
                   />
                 </div>
               </div>
+            </div>
+          </div>
+        </div>
+
+        {/* footer */}
+        <div className={businessProfileStyles.actionContainer}>
+          <div className={businessProfileStyles.actionInnerContainer}>
+            <div className={businessProfileStyles.actionButtonGroup}>
+              <button
+                type="submit"
+                onClick={handleSave}
+                disabled={saving}
+                className={businessProfileStyles.saveButton}
+              >
+                <SaveIcon className="w-4 h-4" />{" "}
+                {saving ? "Saving...." : "Save Profile"}
+              </button>
+
+              <button
+                type="button"
+                onClick={handleClearProfile}
+                className={businessProfileStyles.resetButton}
+              >
+                <ResetIcon className="w-4 h-4" />
+                Clear Profile
+              </button>
             </div>
           </div>
         </div>

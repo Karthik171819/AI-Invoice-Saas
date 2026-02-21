@@ -54,7 +54,7 @@ export async function createBusinessProfile(req, res) {
     const saved = await profile.save();
     return res.status(201).json({
       success: true,
-      dara: saved,
+      data: saved,
       message: "Business profile created successfully",
     });
   } catch (err) {
@@ -118,7 +118,7 @@ export async function updateBusinessProfile(req, res) {
     if (body.defaultTaxPercent !== undefined)
       update.defaultTaxPercent = Number(body.defaultTaxPercent);
 
-    const updated = await BusinessProfile.findByIdandUpdate(id, update, {
+    const updated = await BusinessProfile.findByIdAndUpdate(id, update, {
       new: true,
       runValidators: true,
     });
